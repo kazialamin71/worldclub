@@ -1,0 +1,22 @@
+{
+  "name": "worldclub-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sanity Studio — content editing for the World Club website",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "^6.11.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^6.11.0",
+    "styled-components": "^6.5.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

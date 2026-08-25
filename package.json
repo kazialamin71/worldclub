@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
+    "@portabletext/to-html": "^6.0.0",
+    "@sanity/client": "^8.2.0",
+    "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.13.10",
     "tailwindcss": "^4.1.13",
@@ -20,6 +23,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "gray-matter": "^4.0.3",
     "typescript": "^5.9.3"
   }
 }

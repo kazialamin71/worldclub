@@ -10,7 +10,7 @@ export const SITE = {
   tagline: 'Importer, Exporter & Distributor of world-class brands to Bangladesh',
   description:
     'World Club imports, exports and distributes premium fruits, vegetables, dairy, frozen fish, meat, edible oils, spices and herbs across Bangladesh — ISO 9001, ISO 22000 and HACCP certified, serving supershops, 5-star hotels, CSD stores and 500+ wholesalers.',
-  url: 'https://www.arisa-worldclub.com',
+  url: 'https://arisa-worldclub.com',
   locale: 'en_US',
   founded: '2021',
 } as const;

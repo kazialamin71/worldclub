@@ -101,8 +101,13 @@ and set `"logo": "/images/clients/unimart.png"`.
 
 ### Add real photography
 The site is deliberately designed to look finished **without** photos — categories use
-generated patterns instead of stock images. To add real photos, drop a file into
-`public/images/products/` and add one line to the category's front matter:
+generated patterns instead of stock images.
+
+**If Sanity is connected** (see [Content editing with Sanity](#content-editing-with-sanity)):
+upload the photo in the Studio, hit Publish, done. No files, no code, no deploy.
+
+**If it isn't**, drop a file into `public/images/products/` and add one line to the
+category's front matter:
 
 ```yaml
 image: /images/products/fresh-fruits.jpg
@@ -129,6 +134,63 @@ cold-storage and product photos will outperform stock imagery for a trade buyer.
 | 7 | Add product photography | `public/images/products/` |
 | 8 | Submit the sitemap in Google Search Console | `/sitemap-index.xml` |
 | 9 | Set up Google Business Profile for the Dhaka office | (external) |
+
+---
+
+## Content editing with Sanity
+
+Product categories can be edited in a web dashboard (Sanity Studio) instead of by editing
+markdown files — so a non-technical person can update photos, product lines and descriptions
+without touching the repository.
+
+**This is optional and off by default.** With no `SANITY_PROJECT_ID` set, the site builds from
+`src/content/products/*.md` exactly as it always has. Setting the variable switches the source
+to Sanity. Nothing else in the codebase changes: every page still calls
+`getCollection('products')` and receives the same shape either way
+(`src/loaders/sanityProducts.ts` does the translation).
+
+### One-time setup
+
+1. **Create the project.** Sign up at [sanity.io](https://www.sanity.io) (free tier is ample
+   for this site), create a project, and note the **project ID**.
+
+2. **Point the site at it.** Copy `.env.example` to `.env` and fill in `SANITY_PROJECT_ID`.
+
+3. **Start the Studio.**
+   ```bash
+   cd studio
+   npm install
+   # create studio/.env with SANITY_STUDIO_PROJECT_ID=your-project-id
+   npm run dev          # http://localhost:3333
+   ```
+
+4. **Import the existing content** so the ten categories don't have to be retyped:
+   ```bash
+   # from the project root — get an Editor token from sanity.io/manage
+   SANITY_PROJECT_ID=xxx SANITY_WRITE_TOKEN=yyy node scripts/migrate-products-to-sanity.mjs
+   ```
+   Add `--dry` first to preview what it will import without writing anything.
+   The script is keyed by slug, so re-running it updates rather than duplicates.
+
+5. **Publish the Studio** so it's reachable from anywhere, not just your laptop:
+   ```bash
+   cd studio && npm run deploy      # → https://your-project.sanity.studio
+   ```
+
+6. **Rebuild the site when content changes.** The site is static, so a publish in the Studio
+   does not appear until the site rebuilds. In Cloudflare Pages / Netlify / Vercel, create a
+   **deploy hook** (a URL), then in `sanity.io/manage` → API → Webhooks, fire that URL on
+   publish. Content then goes live about a minute after Publish, automatically.
+
+### Day-to-day: updating a product photo
+
+Open the Studio → pick the category → upload the photo → **Publish**. That's it. Sanity crops,
+resizes and serves the image from its CDN, so there's no need to optimise the file first.
+
+### Adding a field
+
+Add it in `studio/schemaTypes/product.ts`, then map it in `src/loaders/sanityProducts.ts`
+(the GROQ query and the `parseData` block) and add it to the schema in `src/content.config.ts`.
 
 ---
 

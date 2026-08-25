@@ -1,10 +1,17 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { sanityEnabled } from '~/lib/sanity';
+import { sanityProductsLoader } from '~/loaders/sanityProducts';
 
-/* Product categories — add a category by dropping a new .md file into
-   src/content/products/. The file name becomes the URL slug. */
+/* Product categories.
+   With SANITY_PROJECT_ID set, these come from Sanity and are edited in the Studio.
+   Without it, the site falls back to the markdown files in src/content/products/,
+   where the file name becomes the URL slug. Either way the shape below is identical,
+   so pages never need to know which source is in use. */
 const products = defineCollection({
-  loader: glob({ base: './src/content/products', pattern: '**/*.md' }),
+  loader: sanityEnabled
+    ? sanityProductsLoader()
+    : glob({ base: './src/content/products', pattern: '**/*.md' }),
   schema: z.object({
     title: z.string(),
     order: z.number().default(99),

@@ -1,0 +1,1184 @@
+<title>World Club Website Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+  /* ─── Tokens: complete light palette on bare :root ─────────────── */
+  :root {
+    --ground:      #f3f5f2;
+    --surface:     #ffffff;
+    --surface-2:   #eaeee9;
+    --line:        #dde3dc;
+    --line-strong: #c3ccc3;
+    --ink:         #17201b;
+    --ink-soft:    #5b6560;
+    --ink-faint:   #8b948e;
+    --brand:       #0b3e2e;
+    --brand-mid:   #117751;
+    --gold:        #8f5f22;
+    --gold-bright: #a5712f;
+    --blocker:     #9c3a22;
+    --done:        #117751;
+    --later:       #626d67;
+    --rail:        rgba(11, 62, 46, 0.10);
+
+    --measure: 68ch;
+    --step--1: 0.815rem;
+    --step-0:  1.0rem;
+    --step-1:  1.16rem;
+    --step-2:  1.45rem;
+    --step-3:  1.95rem;
+    --step-4:  clamp(2.2rem, 1.5rem + 2.6vw, 3.1rem);
+
+    --font-display: "Fraunces", ui-serif, Georgia, serif;
+    --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0a1310;
+      --surface:     #111c17;
+      --surface-2:   #16241d;
+      --line:        #1f2e26;
+      --line-strong: #2c3f35;
+      --ink:         #e7ede9;
+      --ink-soft:    #9aa8a0;
+      --ink-faint:   #6f7d76;
+      --brand:       #77cfa6;
+      --brand-mid:   #41b280;
+      --gold:        #dcc07b;
+      --gold-bright: #ebdaad;
+      --blocker:     #e08a68;
+      --done:        #41b280;
+      --later:       #8b968f;
+      --rail:        rgba(119, 207, 166, 0.16);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0a1310;
+    --surface:     #111c17;
+    --surface-2:   #16241d;
+    --line:        #1f2e26;
+    --line-strong: #2c3f35;
+    --ink:         #e7ede9;
+    --ink-soft:    #9aa8a0;
+    --ink-faint:   #6f7d76;
+    --brand:       #77cfa6;
+    --brand-mid:   #41b280;
+    --gold:        #dcc07b;
+    --gold-bright: #ebdaad;
+    --blocker:     #e08a68;
+    --done:        #41b280;
+    --later:       #8b968f;
+    --rail:        rgba(119, 207, 166, 0.16);
+  }
+
+  /* ─── Base ─────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.014em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p { margin: 0; text-wrap: pretty; }
+  a { color: var(--brand-mid); text-underline-offset: 3px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--brand-mid);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  code, .mono { font-family: var(--font-mono); font-size: 0.88em; }
+  code {
+    background: var(--surface-2);
+    padding: 0.12em 0.4em;
+    border-radius: 3px;
+  }
+
+  /* ─── Shell ────────────────────────────────────────────────────── */
+  .shell {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 0 1.4rem 6rem;
+  }
+
+  @media (min-width: 1040px) {
+    .shell {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 1fr);
+      gap: 4.5rem;
+      padding-inline: 2.5rem;
+    }
+    .masthead { grid-column: 1 / -1; }
+  }
+
+  /* ─── Masthead ─────────────────────────────────────────────────── */
+  .masthead {
+    padding: 4rem 0 2.5rem;
+    border-bottom: 1px solid var(--line-strong);
+    margin-bottom: 3rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 1.1rem;
+  }
+
+  .masthead h1 { font-size: var(--step-4); line-height: 1.06; max-width: 18ch; }
+
+  .masthead .standfirst {
+    margin-top: 1.5rem;
+    max-width: var(--measure);
+    font-size: var(--step-1);
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 2.6rem;
+    margin-top: 2.4rem;
+    padding: 0;
+    list-style: none;
+  }
+  .facts div { padding: 0.6rem 0; }
+  .facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .facts dd {
+    margin: 0.3rem 0 0;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── Side rail ────────────────────────────────────────────────── */
+  .rail { display: none; }
+
+  @media (min-width: 1040px) {
+    .rail {
+      display: block;
+      position: sticky;
+      top: 2.5rem;
+      align-self: start;
+      max-height: calc(100vh - 5rem);
+      overflow-y: auto;
+    }
+    .rail h2 {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1rem;
+    }
+    .rail ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-left: 1px solid var(--line-strong);
+    }
+    .rail li a {
+      display: block;
+      padding: 0.42rem 0 0.42rem 1rem;
+      margin-left: -1px;
+      border-left: 2px solid transparent;
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 0.885rem;
+      line-height: 1.4;
+    }
+    .rail li a:hover { color: var(--ink); border-left-color: var(--line-strong); }
+  }
+
+  /* ─── Sections ─────────────────────────────────────────────────── */
+  section { scroll-margin-top: 2rem; }
+  section + section { margin-top: 4.5rem; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1.8rem;
+  }
+  .sec-num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+  .sec-head h2 { font-size: var(--step-3); line-height: 1.15; }
+
+  .prose { max-width: var(--measure); display: flex; flex-direction: column; gap: 1.1rem; }
+  .prose h3 {
+    font-family: var(--font-body);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 1rem;
+  }
+  .prose ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .prose li::marker { color: var(--ink-faint); }
+  .prose strong { font-weight: 600; color: var(--ink); }
+
+  .lead { font-size: var(--step-1); color: var(--ink-soft); line-height: 1.6; }
+
+  /* ─── Status chips ─────────────────────────────────────────────── */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.55rem;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .chip::before {
+    content: "";
+    width: 0.42rem; height: 0.42rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .chip-blocker { color: var(--blocker); }
+  .chip-done    { color: var(--done); }
+  .chip-next    { color: var(--gold-bright); }
+  .chip-later   { color: var(--later); }
+
+  /* ─── Tables ───────────────────────────────────────────────────── */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 0.925rem;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+  }
+  tbody td, tbody th {
+    padding: 0.9rem 1rem;
+    border-top: 1px solid var(--line);
+    vertical-align: top;
+    text-align: left;
+    font-weight: 400;
+  }
+  tbody tr:first-child td, tbody tr:first-child th { border-top: none; }
+  tbody th { font-weight: 600; color: var(--ink); }
+  td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink-soft); }
+  .t-note { font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.7rem; }
+
+  /* ─── Phase cards ──────────────────────────────────────────────── */
+  .phases { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1.6rem 1.7rem;
+    display: grid;
+    gap: 1.2rem;
+  }
+  @media (min-width: 760px) {
+    .phase { grid-template-columns: 172px minmax(0, 1fr); gap: 2rem; }
+  }
+
+  .phase-key { display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-start; }
+  .phase-code {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .phase-horizon {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+  }
+  .phase-body h3 {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    margin-bottom: 0.6rem;
+  }
+  .phase-body > p { color: var(--ink-soft); max-width: 62ch; }
+  .phase-body ul {
+    margin: 1.1rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .phase-body li {
+    display: grid;
+    grid-template-columns: 0.7rem minmax(0, 1fr);
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .phase-body li::before {
+    content: "";
+    width: 5px; height: 5px;
+    margin-top: 0.62rem;
+    border-radius: 50%;
+    background: var(--brand-mid);
+  }
+  .phase-body li b { font-weight: 600; }
+
+  /* ─── Callout ──────────────────────────────────────────────────── */
+  .callout {
+    border-left: 3px solid var(--blocker);
+    background: var(--surface);
+    border-radius: 0 6px 6px 0;
+    padding: 1.3rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    max-width: var(--measure);
+  }
+  .callout h3 {
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    font-weight: 600;
+    color: var(--blocker);
+  }
+  .callout p { font-size: 0.94rem; color: var(--ink-soft); }
+  .callout--gold { border-left-color: var(--gold-bright); }
+  .callout--gold h3 { color: var(--gold); }
+
+  /* ─── Split grid ───────────────────────────────────────────────── */
+  .split { display: grid; gap: 1.1rem; }
+  @media (min-width: 720px) { .split { grid-template-columns: 1fr 1fr; } }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .panel h3 {
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    font-weight: 600;
+  }
+  .panel .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .panel p, .panel li { font-size: 0.92rem; color: var(--ink-soft); line-height: 1.6; }
+  .panel ul { margin: 0; padding-left: 1.05rem; display: flex; flex-direction: column; gap: 0.45rem; }
+
+  /* ─── Metric row ───────────────────────────────────────────────── */
+  .metrics {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .metrics { grid-template-columns: repeat(3, 1fr); } }
+  .metric { background: var(--surface); padding: 1.4rem 1.5rem; }
+  .metric dt {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .metric dd {
+    margin: 0.55rem 0 0;
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 600;
+    color: var(--brand);
+    font-variant-numeric: tabular-nums;
+  }
+  .metric .sub { display: block; font-family: var(--font-body); font-size: 0.85rem; font-weight: 400; color: var(--ink-soft); margin-top: 0.35rem; line-height: 1.5; }
+
+  /* ─── Cadence ──────────────────────────────────────────────────── */
+  .cadence { display: flex; flex-direction: column; gap: 0; }
+  .cadence-row {
+    display: grid;
+    gap: 0.35rem 1.5rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 640px) { .cadence-row { grid-template-columns: 130px minmax(0, 1fr); } }
+  .cadence-row:first-child { border-top: none; }
+  .cadence-when {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-top: 0.15rem;
+  }
+  .cadence-what { font-size: 0.94rem; color: var(--ink-soft); max-width: 60ch; }
+  .cadence-what b { color: var(--ink); font-weight: 600; }
+
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  footer.doc-foot {
+    margin-top: 5rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line-strong);
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    max-width: var(--measure);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+</style>
+
+<div class="shell">
+
+  <header class="masthead">
+    <p class="eyebrow">World Club · Website programme · v1.0</p>
+    <h1>Website roadmap &amp; direction</h1>
+    <p class="standfirst">
+      The site is built and passing its checks. This document says what has to happen before it
+      goes live, what to build in the twelve months after, and which decisions can no longer be
+      deferred cheaply. Written for whoever owns the site next — developer, marketer or manager.
+    </p>
+    <dl class="facts">
+      <div>
+        <dt>Status</dt>
+        <dd><span class="chip chip-next">Build complete · pre-launch</span></dd>
+      </div>
+      <div>
+        <dt>Stack</dt>
+        <dd>Astro 5 + Tailwind 4, static</dd>
+      </div>
+      <div>
+        <dt>Pages live</dt>
+        <dd>18</dd>
+      </div>
+      <div>
+        <dt>Blockers open</dt>
+        <dd>6</dd>
+      </div>
+      <div>
+        <dt>Document date</dt>
+        <dd>19 August 2026</dd>
+      </div>
+    </dl>
+  </header>
+
+  <nav class="rail" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#state">01 · Where things stand</a></li>
+      <li><a href="#blockers">02 · Before launch</a></li>
+      <li><a href="#phases">03 · The four phases</a></li>
+      <li><a href="#search">04 · Search direction</a></li>
+      <li><a href="#technical">05 · Technical direction</a></li>
+      <li><a href="#growth">06 · Growing with the group</a></li>
+      <li><a href="#risks">07 · Risks &amp; open decisions</a></li>
+      <li><a href="#cadence">08 · Operating cadence</a></li>
+      <li><a href="#measure">09 · How to measure it</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- ── 01 ─────────────────────────────────────────────────── -->
+    <section id="state">
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <h2>Where things stand</h2>
+      </div>
+
+      <div class="prose">
+        <p class="lead">
+          Eighteen static pages, built from the business profile and the four certificates. No
+          content is placeholder text — every product line, client name, office address and
+          certificate number on the site came out of the source documents.
+        </p>
+        <p>
+          The architecture is deliberately boring, because a trade site earns nothing from being
+          clever. Content lives in Markdown and JSON files; adding a product category is one file,
+          and it propagates automatically to the products grid, the footer, the sourcing origin
+          index, the enquiry form dropdown and the sitemap. There is no database, no server and no
+          monthly platform bill.
+        </p>
+      </div>
+
+      <dl class="metrics" style="margin-top: 2rem;">
+        <div class="metric">
+          <dt>Homepage weight</dt>
+          <dd>12 KB<span class="sub">Gzipped. Whole-site CSS is 46 KB, and no JavaScript framework ships to the browser.</span></dd>
+        </div>
+        <div class="metric">
+          <dt>Catalogue depth</dt>
+          <dd>10 / ~180<span class="sub">Categories and individual product lines, each with storage regime and sourcing origins.</span></dd>
+        </div>
+        <div class="metric">
+          <dt>Proof published</dt>
+          <dd>4 certificates<span class="sub">ISO 9001, ISO 22000, HACCP and DCCI — numbers, dates, scope and downloadable PDFs.</span></dd>
+        </div>
+      </dl>
+
+      <div class="prose" style="margin-top: 2rem;">
+        <h3>What is deliberately missing</h3>
+        <p>
+          Three things were left as slots rather than invented, because faking them would have cost
+          credibility with exactly the buyers this site is for:
+        </p>
+        <ul>
+          <li><strong>Photography.</strong> Categories render generated brand patterns instead of stock imagery. Drop a real file into <code>public/images/products/</code> and add one <code>image:</code> line to swap it in.</li>
+          <li><strong>Client and brand logos.</strong> Currently clean typographic tiles. They need written permission before they become real marks.</li>
+          <li><strong>Prices.</strong> Nowhere on the site, and that is correct for this business — pricing is a conversation, and published prices would only help competitors.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── 02 ─────────────────────────────────────────────────── -->
+    <section id="blockers">
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <h2>Before launch</h2>
+      </div>
+
+      <p class="lead" style="max-width: var(--measure); margin-bottom: 1.8rem;">
+        Six open items. None is large; two of them are things only World Club can answer, and the
+        first is genuinely urgent.
+      </p>
+
+      <div class="callout" style="margin-bottom: 1.8rem;">
+        <h3>The HACCP certificate contradicts itself — confirm with QBM first</h3>
+        <p>
+          The printed HACCP certificate shows <span class="mono">1st Surveillance audit Date:
+          30-07-2027</span> alongside <span class="mono">Certificate Expiry Date: 26-07-2026</span>.
+          Those two labels appear to be transposed: the ISO 9001 and ISO 22000 certificates, issued
+          the same day by the same body, both read expiry 30-07-2027 with surveillance audits on
+          26-07-2025 and 26-07-2026.
+        </p>
+        <p>
+          Read literally, the site would announce that World Club's HACCP certification expired last
+          month. The site currently follows the ISO pattern instead, with the discrepancy commented
+          in <code>src/content/certifications/haccp.md</code>. Get it confirmed in writing from QBM
+          before launch — and while on the call, ask for the continuation letter for the
+          26 July 2026 surveillance audit, which fell due three weeks ago.
+        </p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <caption class="sr-only">Pre-launch blockers</caption>
+          <thead>
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Effort</th>
+              <th scope="col">Where</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Confirm HACCP dates with QBM</th>
+              <td><span class="chip chip-blocker">Blocker</span></td>
+              <td>World Club</td>
+              <td class="num">1 call</td>
+              <td class="num">certifications/haccp.md</td>
+            </tr>
+            <tr>
+              <th scope="row">Decide the live domain</th>
+              <td><span class="chip chip-blocker">Blocker</span></td>
+              <td>World Club</td>
+              <td class="num">1 hr</td>
+              <td class="num">astro.config.mjs, consts.ts, robots.txt</td>
+            </tr>
+            <tr>
+              <th scope="row">Add the Web3Forms access key</th>
+              <td><span class="chip chip-blocker">Blocker</span></td>
+              <td>Developer</td>
+              <td class="num">10 min</td>
+              <td class="num">src/consts.ts</td>
+            </tr>
+            <tr>
+              <th scope="row">Move contact off gmail to a domain address</th>
+              <td><span class="chip chip-next">High</span></td>
+              <td>World Club</td>
+              <td class="num">1 hr</td>
+              <td class="num">src/consts.ts</td>
+            </tr>
+            <tr>
+              <th scope="row">Verify per-category sourcing origins</th>
+              <td><span class="chip chip-next">High</span></td>
+              <td>Sourcing team</td>
+              <td class="num">30 min</td>
+              <td class="num">content/products/*.md</td>
+            </tr>
+            <tr>
+              <th scope="row">Deploy, point DNS, submit sitemap</th>
+              <td><span class="chip chip-next">High</span></td>
+              <td>Developer</td>
+              <td class="num">2 hrs</td>
+              <td class="num">Host + Search Console</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="t-note">
+        Origins were written only from countries the business profile actually names. They are
+        reasonable but unconfirmed, and they now feed the sourcing page's origin index — so a wrong
+        entry is visible in two places.
+      </p>
+
+      <div class="callout callout--gold" style="margin-top: 1.8rem;">
+        <h3>The domain decision is worth ten minutes of thought, not five</h3>
+        <p>
+          The profile lists <span class="mono">arisa-worldclub.com</span>, but ARISA is one of three
+          own brands sitting <em>inside</em> World Club — alongside Fatima and Madina. Naming the
+          parent company's website after one of its own labels will read oddly to a foreign supplier
+          evaluating World Club as a distribution partner, and it constrains the group structure
+          described in section 06.
+        </p>
+        <p>
+          A neutral company domain — <span class="mono">worldclub.com.bd</span> or similar — ages
+          better. Whichever way it goes, decide before launch: changing domains afterwards means
+          redirects, lost search history and reprinted stationery.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 03 ─────────────────────────────────────────────────── -->
+    <section id="phases">
+      <div class="sec-head">
+        <span class="sec-num">03</span>
+        <h2>The four phases</h2>
+      </div>
+
+      <p class="lead" style="max-width: var(--measure); margin-bottom: 1.8rem;">
+        These are sequenced deliberately: each phase depends on the one before it. Building search
+        content before the site has photography, or a CMS before anyone needs to edit, wastes money
+        in a predictable way.
+      </p>
+
+      <div class="phases">
+
+        <article class="phase">
+          <div class="phase-key">
+            <span class="phase-code">Phase 0</span>
+            <span class="phase-horizon">Now →<br>2 weeks</span>
+            <span class="chip chip-blocker">In progress</span>
+          </div>
+          <div class="phase-body">
+            <h3>Get it live</h3>
+            <p>
+              Clear the six items in section 02 and ship. The site is more useful live and imperfect
+              than perfect and unpublished — search engines need time to index, and that clock only
+              starts at launch.
+            </p>
+            <ul>
+              <li><b>Deploy to Cloudflare Pages or Netlify.</b> Free tier, automatic SSL, global CDN. Build command <code>npm run build</code>, output <code>dist</code>.</li>
+              <li><b>Google Search Console + Bing Webmaster Tools.</b> Verify the domain, submit <code>/sitemap-index.xml</code>, confirm all 18 pages are indexed within two weeks.</li>
+              <li><b>Test the enquiry form end to end</b> from a phone on mobile data, not just desktop — and confirm the notification actually reaches a monitored inbox.</li>
+              <li><b>Set up the shared enquiry inbox</b> so form mail does not land with one person who might be travelling.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-key">
+            <span class="phase-code">Phase 1</span>
+            <span class="phase-horizon">Weeks 2 →<br>month 2</span>
+            <span class="chip chip-next">Next</span>
+          </div>
+          <div class="phase-body">
+            <h3>Make it evidential</h3>
+            <p>
+              The site currently <em>asserts</em> an unbroken cold chain. This phase makes it
+              visible. For a buyer comparing suppliers, one photograph of your own cold store with a
+              thermometer in frame outperforms three paragraphs of copy.
+            </p>
+            <ul>
+              <li><b>Commission photography — the single highest-return item on this roadmap.</b> One day with a photographer covers it: the BSCIC warehouse, cold store interiors, the grading table, loading and delivery, product close-ups for all ten categories, the Motijheel showroom, and proper portraits of the Proprietor and the CEO.</li>
+              <li><b>Secure written permission for client and brand logos.</b> Unimart, Shwapno, Agora, Meena Bazar and Chaldal on a supplier page carry real weight — but only with consent on file.</li>
+              <li><b>Build a Vendor Information Pack</b>: one PDF containing the trade licence, all four certificates, company profile and bank details. Procurement teams ask for exactly this, and having it on a download link shortens onboarding by days.</li>
+              <li><b>Publish a general catalogue PDF</b> — the full product list, no prices, updated quarterly. It is what a hotel purchasing manager forwards internally.</li>
+              <li><b>Google Business Profile</b> for the Nikunja-2 head office and the Motijheel showroom, with photos and correct hours.</li>
+              <li><b>Add privacy-friendly analytics</b> (Plausible or Umami — roughly 1 KB, no cookie banner needed under most regimes). Skip Google Analytics unless there is a specific reason: it is heavier, and it will not tell you anything more that matters here.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-key">
+            <span class="phase-code">Phase 2</span>
+            <span class="phase-horizon">Months 2 →<br>6</span>
+            <span class="chip chip-later">Planned</span>
+          </div>
+          <div class="phase-body">
+            <h3>Earn the search traffic</h3>
+            <p>
+              Only start this once phase 1 has landed — content marketing on a site with no
+              photography converts poorly. Full reasoning in section 04.
+            </p>
+            <ul>
+              <li><b>Build the “Sell your brand in Bangladesh” page.</b> This is the most valuable page the site does not yet have. It targets overseas brands searching for a Bangladeshi distributor — which is precisely the Philadelphia / Bauer / AquaChile business model — and there is very little competition for those queries.</li>
+              <li><b>Six export-market pages</b>, one each for Japan, Canada, France, the Netherlands, Malaysia and Saudi Arabia, covering what is shipped there and the documentation handled.</li>
+              <li><b>Three or four buyer guides</b> that answer questions real customers ask: how imported fruit clears customs and reaches cold storage in Dhaka; what ISO 22000 means for a vendor file; a seasonal availability calendar for imported produce.</li>
+              <li><b>Two or three named case studies</b> — a supershop chain, a hotel group, a wholesaler — with volumes and delivery rhythm. Requires client permission, so start asking in phase 1.</li>
+              <li><b>Request distributor listings</b> from represented brands. A link from a brand's official “where to buy” page is high-authority, free, and usually granted for the asking.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="phase">
+          <div class="phase-key">
+            <span class="phase-code">Phase 3</span>
+            <span class="phase-horizon">Months 6 →<br>18</span>
+            <span class="chip chip-later">Conditional</span>
+          </div>
+          <div class="phase-body">
+            <h3>Systems, only when triggered</h3>
+            <p>
+              Nothing here should be built on schedule. Each item has a trigger; build it when the
+              trigger fires and not before, or the site accumulates machinery nobody uses.
+            </p>
+            <ul>
+              <li><b>Content management system.</b> <em>Trigger:</em> someone other than the developer is asking for more than about two content edits a month. Then add Decap CMS — free, git-based, an admin panel at <code>/admin</code>, and it does not change how the site is built.</li>
+              <li><b>Bangla language layer.</b> <em>Trigger:</em> analytics show meaningful Bangladeshi organic traffic bouncing off English pages. Until then it is unlikely to pay — the wholesale channel converts by phone and WhatsApp, and the corporate, hotel and export buyers all operate in English. Deferring is a real decision here, not an oversight.</li>
+              <li><b>Client price-list portal.</b> <em>Trigger:</em> sales are spending real time emailing per-client price lists. Scope it as authenticated per-tier price lists, and expect it to need a server — this is where the static architecture stops being free.</li>
+              <li><b>CRM for enquiries.</b> <em>Trigger:</em> more than roughly ten enquiries a month, or two people handling them. HubSpot's free tier or a shared Airtable base is enough; the form can post to both an inbox and an API.</li>
+            </ul>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ── 04 ─────────────────────────────────────────────────── -->
+    <section id="search">
+      <div class="sec-head">
+        <span class="sec-num">04</span>
+        <h2>Search direction</h2>
+      </div>
+
+      <div class="prose">
+        <p class="lead">
+          This business has two audiences searching in opposite directions, and they need different
+          pages. Treating them as one audience is the most common way a trade site like this
+          underperforms.
+        </p>
+      </div>
+
+      <div class="split" style="margin-top: 1.8rem;">
+        <div class="panel">
+          <span class="kicker">Audience A · Inbound</span>
+          <h3>Bangladeshi buyers looking for a supplier</h3>
+          <p>
+            Purchasing managers at supershops, hotels, restaurants and institutional buyers.
+            They search in English, on desktop, during office hours, and they are comparing two or
+            three suppliers.
+          </p>
+          <ul>
+            <li>imported fruits supplier Dhaka</li>
+            <li>frozen salmon importer Bangladesh</li>
+            <li>cheese distributor Bangladesh</li>
+            <li>HORECA food supplier Dhaka</li>
+          </ul>
+          <p><strong>What wins them:</strong> the certificate pages, the facilities table, and photographs of the cold chain. They are checking whether you will pass procurement.</p>
+        </div>
+
+        <div class="panel">
+          <span class="kicker">Audience B · Outbound</span>
+          <h3>Overseas brands and buyers</h3>
+          <p>
+            Export managers at foreign food brands looking for a Bangladeshi distributor, and
+            importers looking for Bangladeshi product. Higher value per enquiry, far less
+            competition for the queries.
+          </p>
+          <ul>
+            <li>food distributor in Bangladesh</li>
+            <li>import agent Bangladesh food</li>
+            <li>Bangladesh mustard oil exporter</li>
+            <li>aromatic rice exporter Bangladesh</li>
+          </ul>
+          <p><strong>What wins them:</strong> the five-country office footprint, the represented-brands list, the export range, and a dedicated “sell your brand here” page.</p>
+        </div>
+      </div>
+
+      <div class="prose" style="margin-top: 2rem;">
+        <h3>The advantage worth protecting</h3>
+        <p>
+          Almost no Bangladeshi trading company publishes its certificate numbers, issue dates,
+          surveillance schedule and full certified scope as crawlable HTML — they post a JPEG of the
+          certificate, or nothing at all. The certifications page is therefore genuinely
+          differentiated, and it is the page most likely to close a procurement evaluation. Keep it
+          as text, keep the PDFs downloadable, and never move that content behind an image or a
+          contact form.
+        </p>
+        <p>
+          The same applies to the sourcing origin index. It is generated from the product content,
+          so it stays accurate for free — which means it can be trusted, which is the whole point.
+        </p>
+
+        <h3>What not to do</h3>
+        <ul>
+          <li><strong>No AI-spun blog posts.</strong> This audience is a few hundred people. Publishing volume signals nothing to them and increasingly little to Google.</li>
+          <li><strong>No duplicated city pages.</strong> “Food importer in Chittagong / Sylhet / Khulna” templates read as spam and risk the whole domain.</li>
+          <li><strong>No prices.</strong> Competitors read websites too, and pricing varies by client tier and volume anyway.</li>
+          <li><strong>No stock photography of foreign supermarkets.</strong> Buyers here can tell, and it undermines the one thing the site is selling: that this is a real operation with real infrastructure.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── 05 ─────────────────────────────────────────────────── -->
+    <section id="technical">
+      <div class="sec-head">
+        <span class="sec-num">05</span>
+        <h2>Technical direction</h2>
+      </div>
+
+      <div class="prose">
+        <p class="lead">
+          The guiding rule: stay static as long as the business allows. Every step away from static
+          HTML adds a server, a bill, a security surface and a way for the site to be down.
+        </p>
+
+        <h3>When real photography arrives, switch to the image pipeline</h3>
+        <p>
+          Files in <code>public/</code> are served as-is. Once actual photographs land, move them to
+          <code>src/assets/</code> and use Astro's <code>&lt;Image&gt;</code> component instead — it
+          generates WebP and AVIF, builds responsive <code>srcset</code>s and keeps the layout stable
+          automatically. Doing this at the point photos are added costs an hour; retrofitting it
+          across fifty images later costs a day.
+        </p>
+
+        <h3>Performance budget</h3>
+        <p>
+          Hold each page under <strong>250 KB total</strong> including images, and Largest
+          Contentful Paint under <strong>1.5 s on a 4G connection</strong>. That headroom exists
+          today — the homepage is 12 KB gzipped — and photography is the only thing likely to spend
+          it. A single unoptimised 3 MB JPEG undoes the entire architecture.
+        </p>
+
+        <h3>Dependencies</h3>
+        <p>
+          <code>vite</code> is pinned to <code>^6.4.1</code> deliberately. Vite 8 pulls in
+          <code>rolldown</code>, whose native binary fails to install on some Linux setups and breaks
+          the build outright. Astro 5 targets Vite 6, so the pin also keeps a single Vite in the tree
+          and the type-checker clean. Do not bump it without running <code>npm run build</code> and
+          <code>npx astro check</code> against a clean <code>node_modules</code>.
+        </p>
+
+        <h3>Keep the checks running</h3>
+        <p>
+          The build is verified by <code>astro check</code> (types) and an audit script that walks
+          the built output for broken internal links, missing meta descriptions, duplicate
+          <code>&lt;h1&gt;</code>s, images without alt text or dimensions, and invalid JSON-LD. Wire
+          both into the deploy pipeline so a regression fails the build rather than reaching
+          production quietly.
+        </p>
+
+        <h3>Backups and history</h3>
+        <p>
+          The project is not yet a git repository. Make it one before launch and tag a release at
+          each content milestone. The certificates and the business profile PDFs should be committed
+          alongside the code — they are the source of record for everything the site claims.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 06 ─────────────────────────────────────────────────── -->
+    <section id="growth">
+      <div class="sec-head">
+        <span class="sec-num">06</span>
+        <h2>Growing with the group</h2>
+      </div>
+
+      <div class="prose">
+        <p class="lead">
+          The business profile commits to five expansions: a food production and processing plant, a
+          hotel and restaurant chain, high-tech product representation, a supershop and retail chain,
+          and automation engineering products. Only the first is adjacent to what the site currently
+          describes. The others will break the current information architecture, and it is much
+          cheaper to plan for that now than to rebuild later.
+        </p>
+      </div>
+
+      <div class="table-wrap" style="margin-top: 1.8rem;">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Expansion</th>
+              <th scope="col">Fits current site?</th>
+              <th scope="col">What it needs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Food production &amp; processing plant</th>
+              <td>Yes</td>
+              <td>A manufacturing section, plus the plant added to the facilities table. The ISO and HACCP scope already covers manufacturing — the site simply does not lean on it yet.</td>
+            </tr>
+            <tr>
+              <th scope="row">Supershop / retail chain</th>
+              <td>Partly</td>
+              <td>Retail is a consumer audience, not a trade one. It needs its own brand, its own site, and a link from here — not a page bolted onto a B2B distributor.</td>
+            </tr>
+            <tr>
+              <th scope="row">Hotel &amp; restaurant chain</th>
+              <td>No</td>
+              <td>Entirely separate audience and booking behaviour. Separate site, linked from a group page.</td>
+            </tr>
+            <tr>
+              <th scope="row">High-tech products</th>
+              <td>No</td>
+              <td>A food-safety-certified food distributor is the wrong frame for electronics. Separate division or site.</td>
+            </tr>
+            <tr>
+              <th scope="row">Automation engineering</th>
+              <td>No</td>
+              <td>Industrial B2B with a long sales cycle. Separate site.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose" style="margin-top: 1.8rem;">
+        <h3>The recommendation</h3>
+        <p>
+          Keep this site as <strong>World Club, the food trading company</strong>, and do not dilute
+          it. When the second business line becomes real, add a small group landing page on a neutral
+          domain that points to each company — the pattern the profile already implies with Brothers
+          Trade Corporation as a sister concern.
+        </p>
+        <p>
+          That is the practical argument for choosing a neutral company domain in section 02: a
+          group structure hanging off a domain named after one own-brand of one division will be
+          awkward to explain for as long as it exists.
+        </p>
+        <p>
+          Brothers Trade Corporation is currently a single mention on the About page. If it is an
+          active trading entity rather than a historical one, it deserves either a proper section
+          here or its own page — worth deciding before launch, since it is a two-hour job now.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 07 ─────────────────────────────────────────────────── -->
+    <section id="risks">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <h2>Risks &amp; open decisions</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Risk</th>
+              <th scope="col">Consequence if ignored</th>
+              <th scope="col">Mitigation</th>
+              <th scope="col">By when</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">HACCP certificate dates unconfirmed</th>
+              <td>The site either states an expired certification or an unverified date. Both are bad in a vendor audit.</td>
+              <td>Written confirmation from QBM; update the file.</td>
+              <td class="num">Pre-launch</td>
+            </tr>
+            <tr>
+              <th scope="row">Certificates lapse unnoticed</th>
+              <td>Published dates go stale and the strongest page on the site becomes a liability.</td>
+              <td>Calendar reminders 90 days before each surveillance audit and before 30 July 2027.</td>
+              <td class="num">Pre-launch</td>
+            </tr>
+            <tr>
+              <th scope="row">Gmail contact address</th>
+              <td>Weakens trust with foreign suppliers; worse deliverability; enquiries land in spam.</td>
+              <td>Domain mailbox, published everywhere the site shows contact details.</td>
+              <td class="num">Pre-launch</td>
+            </tr>
+            <tr>
+              <th scope="row">No photography</th>
+              <td>The infrastructure claims — 12,000 sft, 110 tons cold storage — read as text rather than proof.</td>
+              <td>One photography day in phase 1.</td>
+              <td class="num">Month 1–2</td>
+            </tr>
+            <tr>
+              <th scope="row">Client logos used without permission</th>
+              <td>Relationship damage with exactly the accounts you most want to name.</td>
+              <td>Written consent on file before any logo is published.</td>
+              <td class="num">Before use</td>
+            </tr>
+            <tr>
+              <th scope="row">Single-person content dependency</th>
+              <td>Content freezes whenever one person is unavailable; the site drifts out of date.</td>
+              <td>Two people who can edit; add the CMS when the trigger in phase 3 fires.</td>
+              <td class="num">Month 6+</td>
+            </tr>
+            <tr>
+              <th scope="row">Stats age silently</th>
+              <td>“US$ 27M turnover” and “39+ suppliers” quietly become wrong and undermine everything near them.</td>
+              <td>Quarterly review of <code>company.json</code>.</td>
+              <td class="num">Quarterly</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 08 ─────────────────────────────────────────────────── -->
+    <section id="cadence">
+      <div class="sec-head">
+        <span class="sec-num">08</span>
+        <h2>Operating cadence</h2>
+      </div>
+
+      <p class="lead" style="max-width: var(--measure); margin-bottom: 1.6rem;">
+        A trade site does not need constant attention, but it does need scheduled attention.
+        Without a rhythm, the failure mode is predictable: nothing changes for eighteen months and
+        then everything is wrong at once.
+      </p>
+
+      <div class="cadence">
+        <div class="cadence-row">
+          <span class="cadence-when">Weekly</span>
+          <span class="cadence-what">Confirm every enquiry received has been answered <b>within one business day</b> — the site promises this explicitly on the contact page. Check the form still delivers by sending one test.</span>
+        </div>
+        <div class="cadence-row">
+          <span class="cadence-when">Monthly</span>
+          <span class="cadence-what">Review Search Console for coverage errors and the queries actually bringing people in. Refresh or extend <b>one product category</b> — new lines, corrected availability, a better photo.</span>
+        </div>
+        <div class="cadence-row">
+          <span class="cadence-when">Quarterly</span>
+          <span class="cadence-what">Update the headline statistics in <code>company.json</code>. Review the client list for additions and departures. Re-export the catalogue PDF. Run <code>npm outdated</code> and patch dependencies.</span>
+        </div>
+        <div class="cadence-row">
+          <span class="cadence-when">Annually</span>
+          <span class="cadence-what">DCCI membership renewal. Certificate surveillance audits and any re-issue. Full re-read of the About and Sourcing copy against how the business now actually works. Revisit this roadmap.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 09 ─────────────────────────────────────────────────── -->
+    <section id="measure">
+      <div class="sec-head">
+        <span class="sec-num">09</span>
+        <h2>How to measure it</h2>
+      </div>
+
+      <div class="prose">
+        <p class="lead">
+          Pageviews are the wrong metric for this business. A hundred well-qualified visitors a month
+          is a success; ten thousand unqualified ones is noise that will tempt bad decisions.
+        </p>
+        <p>Track five things, monthly:</p>
+        <ul>
+          <li><strong>Qualified enquiries.</strong> Form submissions and WhatsApp conversations that name a real company and a real requirement. This is the number that matters.</li>
+          <li><strong>Vendor-pack and certificate downloads.</strong> A strong buying signal — nobody downloads an ISO 22000 certificate casually.</li>
+          <li><strong>Branded search impressions.</strong> Search Console impressions for “World Club” and variants, measuring whether the company is becoming known by name.</li>
+          <li><strong>Enquiry source mix.</strong> Ask on every enquiry how they found you. It is the only reliable way to separate what the website did from what the sales team did.</li>
+          <li><strong>Time to first response.</strong> Against the one-business-day promise the site makes.</li>
+        </ul>
+        <p>
+          A realistic target twelve months after launch, assuming phases 1 and 2 are delivered:
+          <strong>eight to fifteen qualified enquiries a month</strong>, weighted toward Bangladeshi
+          trade buyers, with one or two overseas brand-representation approaches a quarter. Those
+          overseas approaches are worth disproportionately more than their volume suggests — a single
+          new brand agreement can be worth more than a year of retail enquiries.
+        </p>
+      </div>
+    </section>
+
+    <footer class="doc-foot">
+      <p>
+        World Club website programme · roadmap v1.0 · 19 August 2026. Prepared alongside the initial
+        build. Supersede this document at the annual review rather than editing it piecemeal, so the
+        reasoning behind each decision stays legible.
+      </p>
+      <p>
+        Effort figures are estimates for planning, not quotations. Everything in section 02 must be
+        confirmed by World Club before the site goes live.
+      </p>
+    </footer>
+
+  </main>
+</div>

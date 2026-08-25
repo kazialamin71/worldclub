@@ -1,0 +1,41 @@
+{
+  "note": "Existing clients & distributors. 'segment' groups them on the Clients page; 'logo' is an optional file placed in /public/images/clients/ — when it is empty the site renders a clean typographic tile instead, so the page always looks finished.",
+  "segments": [
+    { "id": "supershops", "label": "Supershop & retail chains" },
+    { "id": "online", "label": "Online grocery" },
+    { "id": "institutional", "label": "Institutional & defence" },
+    { "id": "wholesale", "label": "Wholesale markets" }
+  ],
+  "clients": [
+    { "name": "Unimart Gulshan", "segment": "supershops", "logo": "" },
+    { "name": "Shwapno", "note": "ACI Logistics Ltd.", "segment": "supershops", "logo": "" },
+    { "name": "Agora Departmental Stores", "segment": "supershops", "logo": "" },
+    { "name": "Meena Bazar", "segment": "supershops", "logo": "" },
+    { "name": "Lavender Convenience Store Ltd.", "segment": "supershops", "logo": "" },
+    { "name": "Pick & Pay Super Shop", "note": "DOHS", "segment": "supershops", "logo": "" },
+    { "name": "Prince Bazar Departmental Store", "segment": "supershops", "logo": "" },
+    { "name": "Almas Super Shop", "segment": "supershops", "logo": "" },
+    { "name": "Sarabela Bazar", "note": "Rupayan Group", "segment": "supershops", "logo": "" },
+    { "name": "Daruchini Super Shop", "segment": "supershops", "logo": "" },
+    { "name": "Step & Shop Ltd.", "segment": "supershops", "logo": "" },
+    { "name": "Amanah Super Shop", "segment": "supershops", "logo": "" },
+    { "name": "Mona Departmental Store", "segment": "supershops", "logo": "" },
+    { "name": "Mizan Centre Super Shop", "segment": "supershops", "logo": "" },
+    { "name": "Wholesale Club", "note": "Jamuna Group", "segment": "supershops", "logo": "" },
+    { "name": "Chaldal.com", "segment": "online", "logo": "" },
+    { "name": "Wali Bazar.com", "segment": "online", "logo": "" },
+    { "name": "CSD Store", "note": "Cantonment Area", "segment": "institutional", "logo": "" },
+    { "name": "Trust Family Needs Shop", "segment": "institutional", "logo": "" }
+  ],
+  "wholesale": {
+    "headline": "500+ individual wholesalers",
+    "markets": ["Badamtoli Ghat", "Paltan", "Motijheel", "Kawran Bazar", "Gazipur"]
+  },
+  "institutionalSegments": [
+    "Superstores & department stores",
+    "Army CSD stores",
+    "5-star hotels & restaurants",
+    "Corporate houses",
+    "Individual wholesalers"
+  ]
+}

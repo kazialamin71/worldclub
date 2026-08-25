@@ -1,0 +1,25 @@
+{
+  "name": "worldclub-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "World Club — Importer, Exporter & Distributor of world-class brands to Bangladesh",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "@tailwindcss/vite": "^4.1.13",
+    "astro": "^5.13.10",
+    "tailwindcss": "^4.1.13",
+    "vite": "^6.4.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^5.9.3"
+  }
+}

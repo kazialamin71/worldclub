@@ -1,0 +1,184 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import StatGrid from '~/components/StatGrid.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import company from '~/data/company.json';
+import { SITE } from '~/consts';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: `About ${SITE.name}`,
+    url: `${SITE.url}/about`,
+    mainEntity: { '@id': `${SITE.url}/#organization` },
+  },
+];
+---
+<BaseLayout
+  title="About Us"
+  description="World Club is a Dhaka-based importer, exporter and distributor of world-class food brands — ISO 9001, ISO 22000 and HACCP certified, with 12,000 sft of warehousing, 110 tons of cold storage and offices in five countries."
+  schema={schema}
+>
+  <PageHero
+    eyebrow="About World Club"
+    title="A trading house built on cold-chain discipline"
+    lede="Founded on an export business and grown into one of Bangladesh's leading importers of premium food, World Club now runs import, national distribution and direct export from a single certified operation in Dhaka."
+    crumbs={[{ label: 'About', href: '/about' }]}
+  />
+
+  <!-- Story -->
+  <section class="container-page grid gap-14 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
+    <div>
+      <SectionHeading eyebrow="Who we are" title="From export desk to national distributor" />
+      <div class="mt-8 space-y-5 leading-relaxed text-ink-600">
+        <p>
+          World Club began in export — shipping premium Bangladeshi products directly to buyers in
+          Japan, Canada, France, the Netherlands, Malaysia and Saudi Arabia. That work built the
+          supplier relationships, the documentation experience and the understanding of
+          international trade practice that the rest of the business now rests on.
+        </p>
+        <p>
+          Recognising how fast demand for premium imported food was growing in Bangladesh, the
+          company expanded into import. Today World Club is established as one of the country's
+          leading importers and distributors of high-quality fruits, vegetables, cheese, cream,
+          yoghurt, ice cream, dry fruits, spices, herbs, frozen fish, meat and shrimp — supplied
+          directly to superstores, department stores, Army CSD stores and 5-star hotels and
+          restaurants nationwide.
+        </p>
+        <p>
+          The company operates as a proprietorship alongside its sister concern
+          <strong class="font-semibold text-brand-900">Brothers Trade Corporation</strong>,
+          and has been a General Member of the Dhaka Chamber of Commerce &amp; Industry since 2021.
+        </p>
+      </div>
+
+      <dl class="mt-10 grid gap-5 sm:grid-cols-3">
+        {[
+          { k: 'Status', v: company.legal.status },
+          { k: 'Trade licence', v: company.legal.tradeLicense },
+          { k: 'DCCI membership', v: company.legal.dcciMembership },
+        ].map((r) => (
+          <div class="rounded-xl border border-ink-900/8 bg-white p-5 shadow-card">
+            <dt class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand-600">{r.k}</dt>
+            <dd class="mt-2 text-sm font-medium text-brand-950">{r.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="rounded-2xl border border-ink-900/8 bg-white p-7 shadow-card lg:p-8">
+      <h3 class="font-display text-xl text-brand-950">Business policies</h3>
+      <p class="mt-2 text-sm text-ink-500">Sustainability &amp; compliance — the rules the business is run by.</p>
+      <ul class="mt-7 space-y-6">
+        {company.policies.map((p) => (
+          <li class="flex gap-4">
+            <span class="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-900/8">
+              <Icon name="check" class="size-4" strokeWidth={2.4} />
+            </span>
+            <span>
+              <span class="block font-medium text-brand-950">{p.title}</span>
+              <span class="mt-1 block text-[0.88rem] leading-relaxed text-ink-600">{p.body}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Leadership -->
+  <section class="border-y border-ink-900/8 bg-white/60 py-16 lg:py-24">
+    <div class="container-page">
+      <SectionHeading eyebrow="Leadership" title="Promoters & key people" lede="The two people accountable for how this business runs." />
+      <div class="mt-12 grid gap-6 lg:grid-cols-2">
+        {company.leadership.map((person) => (
+          <article class="flex h-full flex-col rounded-2xl border border-ink-900/8 bg-white p-7 shadow-card lg:p-9">
+            <div class="flex items-center gap-4">
+              <span class="inline-flex size-14 items-center justify-center rounded-full bg-brand-900 font-display text-lg font-semibold text-gold-300">
+                {person.initials}
+              </span>
+              <div>
+                <h3 class="text-xl leading-tight text-brand-950">{person.name}</h3>
+                <p class="mt-1 text-[0.8rem] font-semibold uppercase tracking-[0.12em] text-brand-600">{person.role}</p>
+              </div>
+            </div>
+            <p class="mt-6 flex-1 leading-relaxed text-ink-600">{person.bio}</p>
+            <div class="mt-7 space-y-4 border-t border-ink-900/8 pt-6">
+              <p class="flex items-start gap-2.5 text-[0.88rem] text-ink-600">
+                <Icon name="doc" class="mt-0.5 size-4 shrink-0 text-brand-600" />{person.education}
+              </p>
+              <p class="flex items-start gap-2.5 text-[0.88rem] text-ink-600">
+                <Icon name="globe" class="mt-0.5 size-4 shrink-0 text-brand-600" />
+                <span><span class="font-medium text-brand-950">Business travel:</span> {person.travel.join(', ')}</span>
+              </p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Facilities -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading
+      eyebrow="Offices, warehouses & cold storage"
+      title="Where the business physically operates"
+      lede="12,000 sft of warehousing and 110 tons of cold storage capacity, plus offices, a showroom and the registered head office."
+    />
+    <div class="mt-12 overflow-hidden rounded-2xl border border-ink-900/8 bg-white shadow-card">
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[42rem] text-left text-sm">
+          <thead class="bg-brand-950 text-white">
+            <tr>
+              <th scope="col" class="px-6 py-4 font-semibold">Facility</th>
+              <th scope="col" class="px-6 py-4 font-semibold">Location</th>
+              <th scope="col" class="px-6 py-4 font-semibold">Address</th>
+              <th scope="col" class="px-6 py-4 font-semibold">Capacity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {company.facilities.map((f, i) => (
+              <tr class:list={['border-t border-ink-900/8', i % 2 === 1 && 'bg-sand/60']}>
+                <th scope="row" class="px-6 py-4 font-medium text-brand-950">{f.type}</th>
+                <td class="px-6 py-4 text-ink-600">{f.name}</td>
+                <td class="px-6 py-4 text-ink-600">{f.address}</td>
+                <td class="px-6 py-4 font-medium text-brand-700">{f.spec || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Numbers -->
+  <section class="texture-weave bg-brand-950 py-16 lg:py-24">
+    <div class="container-page">
+      <SectionHeading tone="dark" eyebrow="By the numbers" title="The business today" align="center" />
+      <div class="mt-12"><StatGrid tone="dark" /></div>
+    </div>
+  </section>
+
+  <!-- Future -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading
+      eyebrow="Future plan"
+      title="What we are going to do next"
+      lede="The direction the group is investing in — moving upstream into production and downstream into owned retail and hospitality."
+    />
+    <ol class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {company.futurePlans.map((f, i) => (
+        <li class="rounded-2xl border border-ink-900/8 bg-white p-7 shadow-card">
+          <span class="font-display text-sm font-semibold text-gold-600">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-3 text-lg leading-snug text-brand-950">{f.title}</h3>
+          <p class="mt-2.5 text-[0.9rem] leading-relaxed text-ink-600">{f.detail}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

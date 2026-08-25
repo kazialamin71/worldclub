@@ -1,0 +1,31 @@
+---
+import { CONTACT } from '~/consts';
+import Icon from './Icon.astro';
+interface Props {
+  title?: string;
+  lede?: string;
+}
+const {
+  title = 'Need a quotation, a price list, or a supply partner?',
+  lede = 'Tell us the categories and volumes you need. We will come back with availability, origin options and landed pricing — usually within one business day.',
+} = Astro.props;
+---
+<section class="container-page py-16 lg:py-24">
+  <div class="texture-weave relative overflow-hidden rounded-3xl bg-brand-900 px-7 py-12 text-white sm:px-12 lg:px-16 lg:py-16">
+    <div class="pointer-events-none absolute -right-20 -top-24 size-80 rounded-full bg-gold-500/15 blur-3xl" aria-hidden="true" />
+    <div class="relative grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+      <div>
+        <h2 class="max-w-2xl text-3xl leading-tight sm:text-[2.4rem]">{title}</h2>
+        <p class="mt-5 max-w-xl leading-relaxed text-white/70">{lede}</p>
+      </div>
+      <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+        <a href="/contact#enquiry" class="inline-flex items-center justify-center gap-2 rounded-full bg-gold-400 px-6 py-3.5 text-sm font-semibold text-brand-950 transition hover:bg-gold-300">
+          Send an enquiry <Icon name="arrow" class="size-4" />
+        </a>
+        <a href={`tel:+${CONTACT.phonePrimaryRaw}`} class="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-sm font-semibold text-white transition hover:border-white/60">
+          <Icon name="phone" class="size-4" /> {CONTACT.phonePrimary}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

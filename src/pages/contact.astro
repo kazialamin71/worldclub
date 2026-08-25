@@ -1,0 +1,131 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import EnquiryForm from '~/components/EnquiryForm.astro';
+import Icon from '~/components/Icon.astro';
+import company from '~/data/company.json';
+import { SITE, CONTACT } from '~/consts';
+
+const hq = company.offices.find((o) => o.isHq)!;
+const overseas = company.offices.filter((o) => !o.isHq);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: `Contact ${SITE.name}`,
+    url: `${SITE.url}/contact`,
+    mainEntity: { '@id': `${SITE.url}/#organization` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Contact', item: `${SITE.url}/contact` },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Contact"
+  description="Contact World Club, Dhaka — request a quotation, a price list or a supply partnership. Head office in Nikunja-2, Khilkhet, with offices in the Netherlands, UAE, Thailand and Australia."
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Let’s talk about what you need"
+    lede="Quotations, price lists, supply partnerships, brand representation or export enquiries — reach the team directly."
+    crumbs={[{ label: 'Contact', href: '/contact' }]}
+  />
+
+  <!-- Quick contact -->
+  <section class="border-b border-ink-900/8 bg-white/60">
+    <div class="container-page grid gap-6 py-8 sm:grid-cols-3">
+      <a href={`tel:+${CONTACT.phonePrimaryRaw}`} class="group flex items-center gap-4">
+        <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-900 text-gold-300"><Icon name="phone" class="size-5" /></span>
+        <span>
+          <span class="block text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-brand-600">Call</span>
+          <span class="mt-0.5 block font-medium text-brand-950 transition group-hover:text-brand-700">{CONTACT.phonePrimary}</span>
+        </span>
+      </a>
+      <a href={`https://wa.me/${CONTACT.whatsapp}`} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4">
+        <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-900 text-gold-300"><Icon name="whatsapp" class="size-5" /></span>
+        <span>
+          <span class="block text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-brand-600">WhatsApp</span>
+          <span class="mt-0.5 block font-medium text-brand-950 transition group-hover:text-brand-700">{CONTACT.phonePrimary}</span>
+        </span>
+      </a>
+      <a href={`mailto:${CONTACT.email}`} class="group flex items-center gap-4">
+        <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-900 text-gold-300"><Icon name="mail" class="size-5" /></span>
+        <span>
+          <span class="block text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-brand-600">Email</span>
+          <span class="mt-0.5 block break-all font-medium text-brand-950 transition group-hover:text-brand-700">{CONTACT.email}</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <section class="container-page grid gap-12 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-20">
+    <!-- Form -->
+    <div id="enquiry" class="scroll-mt-28">
+      <SectionHeading eyebrow="Enquiry" title="Send us a message" lede="We reply to trade enquiries within one business day." />
+      <div class="mt-9 rounded-2xl border border-ink-900/8 bg-white p-6 shadow-card sm:p-8">
+        <EnquiryForm />
+      </div>
+    </div>
+
+    <!-- Addresses -->
+    <div>
+      <SectionHeading eyebrow="Where to find us" title="Offices" />
+
+      <div class="mt-9 rounded-2xl border border-brand-800/15 bg-brand-50/60 p-7">
+        <p class="flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-brand-700">
+          <span class="text-lg leading-none" aria-hidden="true">{hq.flag}</span> Head office · {hq.country}
+        </p>
+        <address class="mt-4 space-y-3 text-[0.95rem] not-italic leading-relaxed text-ink-700">
+          <p class="flex gap-3"><Icon name="pin" class="mt-0.5 size-4 shrink-0 text-brand-600" />{hq.address}</p>
+          <p class="flex gap-3">
+            <Icon name="phone" class="mt-0.5 size-4 shrink-0 text-brand-600" />
+            <span>
+              <a href={`tel:+${CONTACT.phonePrimaryRaw}`} class="transition hover:text-brand-700">{CONTACT.phonePrimary}</a><br />
+              {CONTACT.phoneSecondary}
+            </span>
+          </p>
+          <p class="flex gap-3">
+            <Icon name="mail" class="mt-0.5 size-4 shrink-0 text-brand-600" />
+            <a href={`mailto:${CONTACT.email}`} class="break-all transition hover:text-brand-700">{CONTACT.email}</a>
+          </p>
+        </address>
+      </div>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {overseas.map((o) => (
+          <div class="rounded-xl border border-ink-900/8 bg-white p-5 shadow-card">
+            <p class="flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-brand-600">
+              <span class="text-base leading-none" aria-hidden="true">{o.flag}</span> {o.country}
+            </p>
+            <p class="mt-2.5 text-[0.88rem] leading-relaxed text-ink-600">{o.address}</p>
+            {o.phone && <p class="mt-2 text-[0.88rem] font-medium text-brand-700">{o.phone}</p>}
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 rounded-xl border border-ink-900/8 bg-white p-6 shadow-card">
+        <h3 class="font-display text-lg text-brand-950">Other locations</h3>
+        <ul class="mt-4 space-y-3 text-[0.88rem] text-ink-600">
+          {company.facilities.filter((f) => f.type !== 'Head Office').map((f) => (
+            <li class="flex gap-3 border-b border-ink-900/6 pb-3 last:border-0 last:pb-0">
+              <Icon name={f.type.startsWith('Cold') ? 'snow' : f.type.startsWith('Warehouse') ? 'warehouse' : 'pin'} class="mt-0.5 size-4 shrink-0 text-brand-600" />
+              <span>
+                <span class="font-medium text-brand-950">{f.type}{f.spec ? ` · ${f.spec}` : ''}</span><br />
+                {f.address}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

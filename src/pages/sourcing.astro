@@ -1,0 +1,240 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import LogoTile from '~/components/LogoTile.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import brands from '~/data/brands.json';
+import company from '~/data/company.json';
+import { SITE } from '~/consts';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+
+/* Build the origin → categories index straight from the product content,
+   so adding a category automatically updates this page. */
+const originMap = new Map<string, string[]>();
+for (const p of products) {
+  for (const origin of p.data.origins) {
+    originMap.set(origin, [...(originMap.get(origin) ?? []), p.data.title]);
+  }
+}
+const origins = [...originMap.entries()]
+  .map(([country, categories]) => ({ country, categories }))
+  .sort((a, b) => b.categories.length - a.categories.length || a.country.localeCompare(b.country));
+
+const steps = [
+  {
+    icon: 'globe',
+    title: 'Supplier selection & vetting',
+    body: 'We work with 39+ suppliers across 15 countries — relationships built over years of direct visits rather than through brokers. Suppliers are assessed for certification, consistency of grade and their ability to hold a schedule.',
+  },
+  {
+    icon: 'doc',
+    title: 'Specification & order',
+    body: 'Grade, size, pack format and delivery window are fixed in writing before an order is placed, so what lands matches what the client was quoted.',
+  },
+  {
+    icon: 'ship',
+    title: 'Freight & documentation',
+    body: 'Air freight for short-shelf-life produce, refrigerated sea freight for volume. Import documentation, phytosanitary and health certification are prepared ahead of arrival to avoid clearance delays.',
+  },
+  {
+    icon: 'snow',
+    title: 'Clearance & cold storage',
+    body: 'Consignments move straight from clearance into temperature-controlled storage — 110 tons of cold storage at Tejgaon and the BADC facility at Hazrat Shahjalal International Airport.',
+  },
+  {
+    icon: 'shield',
+    title: 'Grading & quality check',
+    body: 'Every lot is graded on arrival for size, colour break and defect rate under our HACCP and ISO 22000 systems, and released only against specification.',
+  },
+  {
+    icon: 'truck',
+    title: 'Distribution',
+    body: 'Refrigerated delivery on a fixed schedule to supershops, hotels, institutional buyers and the wholesale markets — 200+ distribution points nationwide.',
+  },
+];
+
+const models = [
+  {
+    title: 'Brand representation',
+    body: 'We hold representation for international brands in Bangladesh — handling import, regulatory compliance, warehousing, distribution and retail placement as a single agreement.',
+    for: 'For overseas brands entering Bangladesh',
+  },
+  {
+    title: 'Category sourcing to order',
+    body: 'Tell us the specification, preferred origin and volume. We identify suppliers, negotiate, import and land it — you deal with one Bangladeshi counterparty instead of a foreign supply chain.',
+    for: 'For retailers, hotels and wholesalers',
+  },
+  {
+    title: 'Own-brand development',
+    body: 'ARISA, Fatima and Madina are our own labels — product specified, produced and packed abroad or locally, and imported under our own brand and pricing control.',
+    for: 'For private-label programmes',
+  },
+  {
+    title: 'Export from Bangladesh',
+    body: 'Premium Bangladeshi food products sourced, packed and shipped directly to overseas buyers, already running to Japan, Canada, France, the Netherlands, Malaysia and Saudi Arabia.',
+    for: 'For international buyers',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Sourcing', item: `${SITE.url}/sourcing` },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Product Sourcing"
+  description="How World Club sources: 39+ vetted suppliers across 15 countries, brand representation, sourcing to order, own-brand development and direct export from Bangladesh — with an unbroken cold chain from origin to shelf."
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Product sourcing"
+    title="How product reaches the shelf"
+    lede="Sourcing is not just buying abroad. It is supplier vetting, fixed specification, freight, clearance, cold storage and grading — six links where imported food is usually lost, and where we hold the chain together."
+    crumbs={[{ label: 'Sourcing', href: '/sourcing' }]}
+  />
+
+  <!-- Headline numbers -->
+  <section class="border-b border-ink-900/8 bg-white/60">
+    <div class="container-page grid gap-8 py-9 sm:grid-cols-3">
+      {[
+        { v: '39+', l: 'Vetted global suppliers' },
+        { v: '15', l: 'Sourcing countries' },
+        { v: '5', l: 'Own offices worldwide' },
+      ].map((s) => (
+        <div>
+          <p class="font-display text-3xl font-semibold leading-none text-brand-700">{s.v}</p>
+          <p class="mt-2 text-sm text-ink-600">{s.l}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading
+      eyebrow="The sourcing chain"
+      title="Six links, none of them outsourced"
+      lede="From supplier vetting to the delivery van, each step is run by our own team under ISO 9001, ISO 22000 and HACCP certified systems."
+    />
+    <ol class="reveal mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {steps.map((s, i) => (
+        <li class="relative flex flex-col rounded-2xl border border-ink-900/8 bg-white p-7 shadow-card lg:p-8">
+          <span class="absolute right-6 top-6 font-display text-4xl font-semibold text-brand-50">{String(i + 1).padStart(2, '0')}</span>
+          <span class="inline-flex size-12 items-center justify-center rounded-xl bg-brand-900 text-gold-300">
+            <Icon name={s.icon} class="size-6" />
+          </span>
+          <h3 class="mt-6 text-xl leading-snug text-brand-950">{s.title}</h3>
+          <p class="mt-3 leading-relaxed text-ink-600">{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Origins -->
+  <section class="texture-weave bg-brand-950 py-16 text-white lg:py-24">
+    <div class="container-page">
+      <SectionHeading
+        tone="dark"
+        eyebrow="Where we source"
+        title="Principal origins, by category"
+        lede="Each origin below is matched to the categories we actually bring in from it — the direct relationships that make consistent grade and reliable volume possible."
+      />
+      <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {origins.map((o) => (
+          <li class="rounded-2xl border border-white/12 bg-white/[0.04] p-6">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="font-display text-lg text-white">{o.country}</h3>
+              <span class="rounded-full border border-white/15 px-2.5 py-0.5 text-[0.7rem] text-white/60">
+                {o.categories.length} {o.categories.length === 1 ? 'category' : 'categories'}
+              </span>
+            </div>
+            <p class="mt-3 text-[0.85rem] leading-relaxed text-white/55">{o.categories.join(' · ')}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 max-w-2xl text-[0.85rem] leading-relaxed text-white/45">
+        Origins vary by season and availability. For a specific origin requirement, ask us —
+        with 39+ supplier relationships we can usually source to preference.
+      </p>
+    </div>
+  </section>
+
+  <!-- Brands -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading
+      eyebrow="Brands we represent"
+      title="International labels under our distribution"
+      lede="World Club holds representation for these brands in Bangladesh, alongside our own labels."
+    />
+    <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {brands.represented.map((b) => (
+        <LogoTile name={b.name} note={`${b.flag} ${b.origin}`} meta={b.category} logo={b.logo || undefined} />
+      ))}
+    </div>
+    <div class="mt-14">
+      <h3 class="font-display text-xl text-brand-950">Our own brands</h3>
+      <p class="mt-2 max-w-2xl text-ink-600">Specified, produced and packed to our requirement, imported and distributed under our own label.</p>
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        {brands.own.map((b) => (
+          <LogoTile name={b.name} note={b.detail} meta={b.category} logo={b.logo || undefined} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Ways of working -->
+  <section class="border-y border-ink-900/8 bg-white/60 py-16 lg:py-24">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Ways of working"
+        title="Four ways companies source through us"
+        lede="Whether you are a brand entering Bangladesh, a retailer filling a category, or an overseas buyer looking for Bangladeshi product."
+      />
+      <div class="mt-12 grid gap-5 sm:grid-cols-2">
+        {models.map((m) => (
+          <article class="flex h-full flex-col rounded-2xl border border-ink-900/8 bg-white p-7 shadow-card lg:p-8">
+            <p class="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-brand-600">{m.for}</p>
+            <h3 class="mt-3 text-2xl text-brand-950">{m.title}</h3>
+            <p class="mt-4 flex-1 leading-relaxed text-ink-600">{m.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Global offices -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading
+      eyebrow="Presence"
+      title="Offices in five countries"
+      lede="Own presence in key sourcing and trade markets — people on the ground rather than agents at a distance."
+    />
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {company.offices.map((o) => (
+        <div class="rounded-2xl border border-ink-900/8 bg-white p-6 shadow-card">
+          <span class="text-2xl" aria-hidden="true">{o.flag}</span>
+          <h3 class="mt-3 font-display text-lg leading-tight text-brand-950">{o.country}</h3>
+          <p class="mt-1 text-[0.78rem] font-semibold uppercase tracking-[0.1em] text-brand-600">
+            {o.isHq ? 'Head office' : o.city}
+          </p>
+          <p class="mt-3 text-[0.85rem] leading-relaxed text-ink-600">{o.address}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CtaBand
+    title="Have a sourcing requirement?"
+    lede="Send us the specification, preferred origin and volume. We will identify suppliers, quote landed pricing and handle everything through to your delivery point."
+  />
+</BaseLayout>

@@ -1,0 +1,279 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import ProductCard from '~/components/ProductCard.astro';
+import StatGrid from '~/components/StatGrid.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import LogoTile from '~/components/LogoTile.astro';
+import Icon from '~/components/Icon.astro';
+import { SITE, CONTACT } from '~/consts';
+import company from '~/data/company.json';
+import clients from '~/data/clients.json';
+import brands from '~/data/brands.json';
+
+const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const featured = products.filter((p) => p.data.featured).slice(0, 6);
+const certs = (await getCollection('certifications')).sort((a, b) => a.data.order - b.data.order);
+
+const pillars = [
+  {
+    icon: 'globe',
+    title: 'Import',
+    body: 'Direct sourcing from 39+ audited suppliers across 15 countries — fresh produce, dairy, frozen seafood and meat, oils, spices and dry goods, landed and cleared in Dhaka.',
+    link: '/sourcing',
+    linkLabel: 'How we source',
+  },
+  {
+    icon: 'truck',
+    title: 'Distribute',
+    body: 'National distribution into supershop chains, department stores, 5-star hotels, Army CSD stores and 500+ wholesalers — with our own warehousing and cold storage behind it.',
+    link: '/clients',
+    linkLabel: 'Who we supply',
+  },
+  {
+    icon: 'ship',
+    title: 'Export',
+    body: 'Premium Bangladeshi mustard oil, aromatic rice, muri, bay leaf and beverages shipped directly to buyers in Japan, Canada, France, the Netherlands, Malaysia and Saudi Arabia.',
+    link: '/products/export-range',
+    linkLabel: 'Export range',
+  },
+];
+
+const capability = [
+  { icon: 'warehouse', value: '12,000 sft', label: 'Warehousing', detail: 'Across BSCIC Kanchpur (9,000 sft) and Nikunja-2 (3,000 sft).' },
+  { icon: 'snow', value: '110 tons', label: 'Cold storage', detail: 'Tejgaon I/A (50 t) and BADC at Hazrat Shahjalal Int’l Airport (60 t).' },
+  { icon: 'shield', value: '3 standards', label: 'Certified systems', detail: 'ISO 9001:2015, ISO 22000:2018 and HACCP — audited by QBM, Sweden.' },
+  { icon: 'users', value: '5 countries', label: 'Own offices', detail: 'Dhaka, plus the Netherlands, UAE, Thailand and Australia.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Product categories',
+    itemListElement: products.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.data.title,
+      url: `${SITE.url}/products/${p.id}`,
+    })),
+  },
+];
+---
+<BaseLayout
+  isHome
+  title="Home"
+  description={SITE.description}
+  schema={schema}
+>
+  <!-- ───────────────────────── Hero ───────────────────────── -->
+  <section class="texture-weave relative overflow-hidden bg-brand-950 text-white">
+    <div class="pointer-events-none absolute -right-40 -top-40 size-[34rem] rounded-full bg-brand-700/35 blur-3xl" aria-hidden="true" />
+    <div class="pointer-events-none absolute -bottom-56 -left-24 size-[30rem] rounded-full bg-gold-600/12 blur-3xl" aria-hidden="true" />
+
+    <div class="container-page relative grid gap-14 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-24">
+      <div>
+        <p class="flex items-center gap-2.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-gold-300">
+          <span class="h-px w-7 bg-gold-300/50" />Since {SITE.founded} · Dhaka, Bangladesh
+        </p>
+
+        <h1 class="mt-6 text-[2.4rem] leading-[1.06] sm:text-5xl lg:text-[3.85rem]">
+          World-class brands,<br class="hidden sm:block" />
+          <span class="text-gold-300">delivered to Bangladesh.</span>
+        </h1>
+
+        <p class="mt-7 max-w-xl text-lg leading-relaxed text-white/70">
+          World Club imports, distributes and exports premium food — 200+ lines of fruits,
+          vegetables, dairy, frozen seafood, meat, oils and spices — through an unbroken cold
+          chain into the country’s leading supershops, hotels and wholesale markets.
+        </p>
+
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href="/products" class="inline-flex items-center justify-center gap-2 rounded-full bg-gold-400 px-7 py-3.5 text-sm font-semibold text-brand-950 transition hover:bg-gold-300">
+            Explore the product range <Icon name="arrow" class="size-4" />
+          </a>
+          <a href="/contact#enquiry" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-7 py-3.5 text-sm font-semibold text-white transition hover:border-white/60 hover:bg-white/5">
+            Request a quotation
+          </a>
+        </div>
+
+        <ul class="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-7 text-[0.8rem] text-white/55">
+          {['ISO 9001:2015', 'ISO 22000:2018', 'HACCP certified', 'DCCI member since 2021'].map((c) => (
+            <li class="flex items-center gap-2">
+              <Icon name="check" class="size-3.5 text-gold-300" strokeWidth={2.5} />{c}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Numbers panel: the fastest possible credibility signal for a trade buyer. -->
+      <div class="relative">
+        <div class="rounded-2xl border border-white/12 bg-white/[0.045] p-7 backdrop-blur-sm lg:p-8">
+          <p class="text-[0.72rem] font-semibold uppercase tracking-[0.16em] text-gold-300">The business at a glance</p>
+          <dl class="mt-7 grid grid-cols-2 gap-x-6 gap-y-7">
+            {company.stats.slice(0, 4).map((s) => (
+              <div>
+                <dt class="font-display text-[1.9rem] font-semibold leading-none text-white">{s.value}</dt>
+                <dd class="mt-2 text-[0.82rem] leading-snug text-white/55">{s.label}</dd>
+              </div>
+            ))}
+          </dl>
+          <div class="mt-8 flex items-center gap-3 border-t border-white/10 pt-6">
+            <Icon name="phone" class="size-4 text-gold-300" />
+            <a href={`tel:+${CONTACT.phonePrimaryRaw}`} class="text-sm font-medium text-white transition hover:text-gold-200">
+              {CONTACT.phonePrimary}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── Three pillars ─────────────────── -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading
+      eyebrow="What we do"
+      title="One partner across the whole trade lane"
+      lede="Most companies do one of these. World Club runs all three from the same team, the same warehouses and the same certified management system."
+    />
+
+    <div class="reveal mt-12 grid gap-5 lg:grid-cols-3">
+      {pillars.map((p) => (
+        <article class="group flex flex-col rounded-2xl border border-ink-900/8 bg-white p-7 shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-lift lg:p-8">
+          <span class="inline-flex size-12 items-center justify-center rounded-xl bg-brand-900 text-gold-300">
+            <Icon name={p.icon} class="size-6" />
+          </span>
+          <h3 class="mt-6 text-2xl text-brand-950">{p.title}</h3>
+          <p class="mt-3 flex-1 leading-relaxed text-ink-600">{p.body}</p>
+          <a href={p.link} class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 transition group-hover:gap-2.5">
+            {p.linkLabel} <Icon name="arrow" class="size-4" />
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Products ───────────────────── -->
+  <section class="border-y border-ink-900/8 bg-white/60 py-16 lg:py-24">
+    <div class="container-page">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading
+          eyebrow="Product range"
+          title="200+ lines across ten categories"
+          lede="From Washington apples and Chilean salmon to Philadelphia cheese and our own Fatima sunflower oil — sourced directly, stored properly, delivered retail-ready."
+        />
+        <a href="/products" class="inline-flex items-center gap-2 rounded-full border border-brand-800/20 px-5 py-2.5 text-sm font-semibold text-brand-800 transition hover:bg-brand-800 hover:text-white">
+          All categories <Icon name="arrow" class="size-4" />
+        </a>
+      </div>
+
+      <div class="reveal mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {featured.map((entry) => <ProductCard entry={entry} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── Certifications ────────────────── -->
+  <section class="container-page py-16 lg:py-24">
+    <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div>
+        <SectionHeading
+          eyebrow="Certifications"
+          title="Audited systems, not claims"
+          lede="Our quality and food-safety systems are independently assessed by Quality Brains Management (Stockholm, Sweden) under accreditation SWE-24. Every certificate below is published in full — number, dates and scope."
+        />
+        <a href="/certifications" class="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-900">
+          View all certificates <Icon name="arrow" class="size-4" />
+        </a>
+      </div>
+
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {certs.map((c) => (
+          <li class="rounded-2xl border border-ink-900/8 bg-white p-6 shadow-card">
+            <span class="inline-flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700 ring-1 ring-brand-900/8">
+              <Icon name="shield" class="size-5" />
+            </span>
+            <h3 class="mt-4 text-lg text-brand-950">{c.data.title}</h3>
+            <p class="mt-1 text-[0.85rem] text-ink-500">{c.data.standard}</p>
+            {c.data.certificateNo && (
+              <p class="mt-4 border-t border-ink-900/8 pt-3 font-mono text-[0.75rem] text-brand-700">{c.data.certificateNo}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ────────────────────── Capability band ────────────────── -->
+  <section class="texture-weave bg-brand-950 py-16 text-white lg:py-24">
+    <div class="container-page">
+      <SectionHeading
+        tone="dark"
+        eyebrow="Infrastructure"
+        title="The cold chain is the product"
+        lede="Anyone can place an order abroad. Landing chilled and frozen food in Dhaka in sellable condition — consistently, through a Bangladeshi summer — takes owned infrastructure."
+      />
+      <div class="mt-12 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+        {capability.map((c) => (
+          <div class="bg-brand-950 p-7">
+            <Icon name={c.icon} class="size-6 text-gold-300" />
+            <p class="mt-5 font-display text-[1.7rem] font-semibold leading-none text-white">{c.value}</p>
+            <p class="mt-2 text-sm font-semibold text-white/90">{c.label}</p>
+            <p class="mt-2 text-[0.83rem] leading-relaxed text-white/50">{c.detail}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Clients ─────────────────────── -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading
+      eyebrow="Clients & distributors"
+      title="Trusted by the country’s leading retailers"
+      lede="Unimart, Shwapno, Agora, Meena Bazar, Chaldal, CSD stores and 500+ wholesalers in Badamtoli Ghat, Paltan, Motijheel, Kawran Bazar and Gazipur."
+    />
+    <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+      {clients.clients.slice(0, 10).map((c) => (
+        <LogoTile name={c.name} note={c.note} logo={c.logo || undefined} />
+      ))}
+    </div>
+    <a href="/clients" class="mt-10 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 transition hover:gap-3">
+      See the full client list <Icon name="arrow" class="size-4" />
+    </a>
+  </section>
+
+  <!-- ──────────────────────── Brands ───────────────────────── -->
+  <section class="border-y border-ink-900/8 bg-white/60 py-16 lg:py-24">
+    <div class="container-page">
+      <SectionHeading
+        eyebrow="Brands we represent"
+        title="International labels, represented locally"
+        lede="World Club holds representation for these brands in Bangladesh — brand-supported product with proper documentation, not grey-market stock."
+      />
+      <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {brands.represented.map((b) => (
+          <LogoTile name={b.name} note={`${b.flag} ${b.origin}`} meta={b.category} logo={b.logo || undefined} />
+        ))}
+      </div>
+
+      <div class="mt-14">
+        <h3 class="font-display text-xl text-brand-950">Our own brands</h3>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          {brands.own.map((b) => (
+            <LogoTile name={b.name} note={b.detail} meta={b.category} logo={b.logo || undefined} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── Numbers ─────────────────────── -->
+  <section class="container-page py-16 lg:py-24">
+    <SectionHeading eyebrow="By the numbers" title="Scale that a supply partner can rely on" align="center" />
+    <div class="mt-12"><StatGrid tone="light" /></div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

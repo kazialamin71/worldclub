@@ -1,0 +1,127 @@
+---
+import { FORM_ACCESS_KEY, SITE } from '~/consts';
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+
+const categories = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+const configured = FORM_ACCESS_KEY !== 'REPLACE_WITH_YOUR_WEB3FORMS_ACCESS_KEY';
+
+const field =
+  'w-full rounded-lg border border-ink-900/12 bg-white px-4 py-3 text-[0.95rem] text-ink-900 shadow-sm transition placeholder:text-ink-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20';
+const label = 'block text-sm font-medium text-brand-950';
+---
+<form id="enquiry-form" action="https://api.web3forms.com/submit" method="POST" class="space-y-5" novalidate>
+  <input type="hidden" name="access_key" value={FORM_ACCESS_KEY} />
+  <input type="hidden" name="subject" value={`New trade enquiry — ${SITE.name} website`} />
+  <input type="hidden" name="from_name" value={SITE.name} />
+  <!-- Honeypot: bots fill this, humans never see it. -->
+  <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label class={label} for="name">Your name <span class="text-gold-600">*</span></label>
+      <input class={`mt-2 ${field}`} type="text" id="name" name="name" required autocomplete="name" placeholder="Full name" />
+    </div>
+    <div>
+      <label class={label} for="company">Company</label>
+      <input class={`mt-2 ${field}`} type="text" id="company" name="company" autocomplete="organization" placeholder="Company or store name" />
+    </div>
+    <div>
+      <label class={label} for="email">Email <span class="text-gold-600">*</span></label>
+      <input class={`mt-2 ${field}`} type="email" id="email" name="email" required autocomplete="email" placeholder="you@company.com" />
+    </div>
+    <div>
+      <label class={label} for="phone">Phone / WhatsApp</label>
+      <input class={`mt-2 ${field}`} type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+880 …" />
+    </div>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label class={label} for="enquiry_type">I am a</label>
+      <select class={`mt-2 ${field}`} id="enquiry_type" name="enquiry_type">
+        <option>Retailer / supershop</option>
+        <option>Hotel, restaurant or caterer</option>
+        <option>Wholesaler / distributor</option>
+        <option>Corporate or institutional buyer</option>
+        <option>Overseas buyer (export enquiry)</option>
+        <option>Supplier / brand seeking representation</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div>
+      <label class={label} for="category">Category of interest</label>
+      <select class={`mt-2 ${field}`} id="category" name="category">
+        <option value="">Select a category…</option>
+        {categories.map((c) => <option value={c.data.title}>{c.data.title}</option>)}
+        <option value="Multiple / not sure">Multiple / not sure</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <label class={label} for="message">What do you need? <span class="text-gold-600">*</span></label>
+    <textarea class={`mt-2 ${field}`} id="message" name="message" rows="5" required placeholder="Products, approximate volumes, delivery location and how often you order."></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-800 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-brand-900 disabled:opacity-60 sm:w-auto"
+  >
+    Send enquiry <Icon name="arrow" class="size-4" />
+  </button>
+
+  <p id="form-status" class="hidden rounded-lg px-4 py-3 text-sm" role="status" aria-live="polite"></p>
+
+  {!configured && (
+    <p class="rounded-lg border border-gold-300 bg-gold-50 px-4 py-3 text-[0.82rem] leading-relaxed text-gold-800">
+      <strong>Setup note (only you can see this — it disappears automatically):</strong> get a free
+      access key at <a class="underline" href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a>
+      and paste it into <code class="rounded bg-white px-1">FORM_ACCESS_KEY</code> in
+      <code class="rounded bg-white px-1">src/consts.ts</code>. Until then this form will not deliver mail.
+    </p>
+  )}
+</form>
+
+<script>
+  const form = document.getElementById('enquiry-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+
+  const show = (message: string, ok: boolean) => {
+    if (!status) return;
+    status.textContent = message;
+    status.className = ok
+      ? 'rounded-lg border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800'
+      : 'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700';
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const original = button.innerHTML;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+      const result = await response.json();
+      if (response.ok && result.success) {
+        show('Thank you — your enquiry has reached our team. We usually reply within one business day.', true);
+        form.reset();
+      } else {
+        show(result.message || 'Something went wrong. Please call or WhatsApp us instead.', false);
+      }
+    } catch {
+      show('Network error. Please call or WhatsApp us instead.', false);
+    } finally {
+      button.disabled = false;
+      button.innerHTML = original;
+    }
+  });
+</script>

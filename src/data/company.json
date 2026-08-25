@@ -1,0 +1,70 @@
+{
+  "legal": {
+    "status": "Proprietorship Company",
+    "tradeLicense": "TRAD/DSCC/015840/2021",
+    "dcciMembership": "DCCI-08461",
+    "sisterConcerns": ["Brothers Trade Corporation", "World Club"]
+  },
+
+  "stats": [
+    { "value": "200+", "label": "Product lines", "detail": "World-class fruits, vegetables, dairy, frozen fish & meat, oils, spices and herbs." },
+    { "value": "US$ 27M", "label": "Annual turnover", "detail": "Yearly business turnover across import, export and national distribution." },
+    { "value": "39+", "label": "Global suppliers", "detail": "Long-standing, audited supplier relationships worldwide." },
+    { "value": "15", "label": "Sourcing countries", "detail": "Supplier destinations across Europe, Asia, Oceania, Africa and the Americas." },
+    { "value": "200+", "label": "Distribution points", "detail": "Supershops, department stores, hotels and wholesale channels nationwide." },
+    { "value": "120", "label": "Specialists", "detail": "People across selection, sourcing, import, cold storage and distribution." }
+  ],
+
+  "leadership": [
+    {
+      "name": "Shah Md Mahtubuddin Al Mamun",
+      "role": "Proprietor",
+      "initials": "SM",
+      "education": "MBA, University of Dhaka",
+      "bio": "Began his career in the export business immediately after post-graduation, building the company's international trade base through premium Bangladeshi products — mustard oil, carbonated beverages, bay leaf, muri, dried chilli, energy drinks, muri toast, aromatic rice and flattened rice — exported directly to Japan, Canada, France, the Netherlands, Malaysia and Saudi Arabia. Recognising the growing demand for premium imported food in Bangladesh, he expanded into the import sector, where World Club now supplies superstores, department stores, Army CSD stores and 5-star hotels and restaurants nationwide.",
+      "travel": ["Singapore", "USA", "Kenya", "Netherlands", "UK", "Belgium", "Saudi Arabia", "UAE", "Qatar", "India", "Thailand", "Vietnam"]
+    },
+    {
+      "name": "AKM Fariduzzaman",
+      "role": "Chief Executive Officer",
+      "initials": "AF",
+      "education": "Master's degree, Jagannath University",
+      "bio": "Joined World Club in mid-2021 after serving as Head of Supply Chain at a renowned apparel manufacturing group in Bangladesh. He brings deep leadership strength in management, teamwork, supply chain, business development, lead-time follow-up and logistics management, developed over a career spanning several companies in supply chain and logistics.",
+      "travel": ["India", "Singapore", "Saudi Arabia", "Thailand", "Malaysia", "China", "Vietnam"]
+    }
+  ],
+
+  "facilities": [
+    { "type": "Registered Office", "name": "Motijheel", "address": "78, Motijheel C/A (5th Floor), Motijheel, Dhaka-1000", "spec": "" },
+    { "type": "Head Office", "name": "Nikunja-2", "address": "Manha Villa, House No. 17, Road No. 05, Kobe Faruk Sarani, Nikunja-2, Khilkhet, Dhaka-1229", "spec": "" },
+    { "type": "Showroom", "name": "Karim Chamber", "address": "99, Karim Chamber, Motijheel C/A, Dhaka-1000", "spec": "" },
+    { "type": "Warehouse 01", "name": "BSCIC Kanchpur", "address": "BSCIC, Kanchpur, Narayanganj", "spec": "9,000 sft" },
+    { "type": "Warehouse 02", "name": "Nikunja-2", "address": "House No. 17, Road No. 05, Nikunja-2, Khilkhet, Dhaka-1229", "spec": "3,000 sft" },
+    { "type": "Cold Storage 01", "name": "AL Enterprise (Shikaju)", "address": "152 Tejgaon I/A, Dhaka", "spec": "50 tons capacity" },
+    { "type": "Cold Storage 02", "name": "BADC Agri Product Cold Storage", "address": "Hazrat Shahjalal International Airport, Dhaka", "spec": "60 tons capacity" }
+  ],
+
+  "offices": [
+    { "country": "Bangladesh", "city": "Dhaka", "flag": "🇧🇩", "address": "Manha Villa, House No. 17, Road No. 05, Nikunja-2, Khilkhet, Dhaka-1229", "phone": "+880 1720 556768", "isHq": true },
+    { "country": "Thailand", "city": "Pattaya", "flag": "🇹🇭", "address": "205/27-28 Moo 10, 2nd Road Nongprue, Banglamung, Chonburi, Pattaya City", "phone": "", "isHq": false },
+    { "country": "United Arab Emirates", "city": "Dubai", "flag": "🇦🇪", "address": "50 29 Tanvi Business Center, Nishan Showroom Building, Deira, Dubai", "phone": "", "isHq": false },
+    { "country": "Netherlands", "city": "De Lier", "flag": "🇳🇱", "address": "Poortcamp 30, 2678 PT De Lier", "phone": "", "isHq": false },
+    { "country": "Australia", "city": "New South Wales", "flag": "🇦🇺", "address": "5/7 Mckern Street, Campsie, NSW 2194", "phone": "+61 434 432 081", "isHq": false }
+  ],
+
+  "policies": [
+    { "title": "100% organic & high-quality food", "body": "Import, export and distribution built exclusively around organic and high-quality food products." },
+    { "title": "Classified customer segments", "body": "Focused reach into the specific retail, institutional and wholesale segments we serve best." },
+    { "title": "High-quality storage", "body": "Dedicated warehousing and temperature-controlled cold storage protecting the cold chain end to end." },
+    { "title": "Efficient business experts", "body": "A team of highly efficient specialists across selection, sourcing, import and distribution." },
+    { "title": "Trustworthy partners", "body": "Long-term work with trustworthy suppliers and business partners in every sourcing market." }
+  ],
+
+  "futurePlans": [
+    { "title": "Food production & processing plant", "detail": "Moving upstream from distribution into own-manufacture of packaged and processed food." },
+    { "title": "Hotel & restaurant chain", "detail": "Extending the food business into hospitality, backed by existing supply lines." },
+    { "title": "High-tech products from top brands", "detail": "New representation agreements in technology categories beyond food." },
+    { "title": "Super shop & retail chain stores", "detail": "Owned retail, closing the loop from import through to the end customer." },
+    { "title": "Automation engineering products", "detail": "Industrial and automation engineering lines for the Bangladeshi market." }
+  ]
+}

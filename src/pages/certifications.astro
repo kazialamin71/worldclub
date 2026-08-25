@@ -1,0 +1,201 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import { SITE } from '~/consts';
+
+const certs = (await getCollection('certifications')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  certs.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+
+const accentRing: Record<string, string> = {
+  brand: 'bg-brand-50 text-brand-700 ring-brand-900/8',
+  gold: 'bg-gold-50 text-gold-700 ring-gold-900/10',
+  ink: 'bg-ink-100 text-ink-700 ring-ink-900/8',
+};
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Certifications', item: `${SITE.url}/certifications` },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Certifications & Compliance"
+  description="World Club holds ISO 9001:2015, ISO 22000:2018 and HACCP certification independently assessed by Quality Brains Management, Sweden, plus Dhaka Chamber of Commerce & Industry membership DCCI-08461. Certificate numbers, dates and scope published in full."
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Certifications & compliance"
+    title="Every certificate, published in full"
+    lede="Certificate numbers, issue and expiry dates, surveillance audit schedule and the complete certified scope — all downloadable, all independently verifiable."
+    crumbs={[{ label: 'Certifications', href: '/certifications' }]}
+  />
+
+  <!-- Summary strip -->
+  <section class="border-b border-ink-900/8 bg-white/60">
+    <div class="container-page grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
+      {certs.map((c) => (
+        <a href={`#${c.id}`} class="group flex items-center gap-3">
+          <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-900 text-gold-300">
+            <Icon name="shield" class="size-5" />
+          </span>
+          <span>
+            <span class="block font-medium leading-tight text-brand-950 transition group-hover:text-brand-700">{c.data.title}</span>
+            <span class="mt-0.5 block text-[0.78rem] text-ink-500">{c.data.certificateNo}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-page space-y-8 py-16 lg:py-20">
+    {rendered.map(({ entry, Content }) => (
+      <article id={entry.id} class="scroll-mt-28 overflow-hidden rounded-2xl border border-ink-900/8 bg-white shadow-card">
+        <div class="grid gap-0 lg:grid-cols-[0.85fr_1.15fr]">
+          <!-- Certificate scan -->
+          <div class="border-b border-ink-900/8 bg-ink-50 p-6 lg:border-b-0 lg:border-r lg:p-8">
+            {entry.data.thumb ? (
+              <a href={entry.data.file} target="_blank" rel="noopener noreferrer" class="group block">
+                <img
+                  src={entry.data.thumb}
+                  alt={`${entry.data.title} certificate issued to World Club`}
+                  width="800"
+                  height="1100"
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full rounded-lg border border-ink-900/10 bg-white shadow-sm transition duration-300 group-hover:shadow-lift"
+                />
+                <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-brand-700">
+                  <Icon name="doc" class="size-4" /> Open full certificate (PDF)
+                </span>
+              </a>
+            ) : (
+              <div class="flex aspect-[3/4] items-center justify-center rounded-lg border border-dashed border-ink-300 text-ink-400">
+                <Icon name="doc" class="size-10" />
+              </div>
+            )}
+          </div>
+
+          <!-- Detail -->
+          <div class="p-7 lg:p-10">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <span class:list={['inline-flex items-center gap-2 rounded-full px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.1em] ring-1', accentRing[entry.data.accent]]}>
+                  <Icon name="shield" class="size-3.5" />{entry.data.standard}
+                </span>
+                <h2 class="mt-4 text-3xl text-brand-950">{entry.data.title}</h2>
+              </div>
+            </div>
+
+            <div class="prose-wc mt-5 max-w-none">
+              <Content />
+            </div>
+
+            <dl class="mt-8 grid gap-x-8 gap-y-5 border-t border-ink-900/8 pt-7 sm:grid-cols-2">
+              {entry.data.certificateNo && (
+                <div>
+                  <dt class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand-600">Certificate no.</dt>
+                  <dd class="mt-1.5 font-mono text-[0.95rem] text-brand-950">{entry.data.certificateNo}</dd>
+                </div>
+              )}
+              <div>
+                <dt class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand-600">Issued by</dt>
+                <dd class="mt-1.5 text-[0.95rem] text-ink-700">{entry.data.issuer}</dd>
+              </div>
+              {entry.data.issued && (
+                <div>
+                  <dt class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand-600">Initial registration</dt>
+                  <dd class="mt-1.5 text-[0.95rem] text-ink-700">{entry.data.issued}</dd>
+                </div>
+              )}
+              {entry.data.expires && (
+                <div>
+                  <dt class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand-600">Valid until</dt>
+                  <dd class="mt-1.5 text-[0.95rem] text-ink-700">{entry.data.expires}</dd>
+                </div>
+              )}
+              {entry.data.surveillance.length > 0 && (
+                <div class="sm:col-span-2">
+                  <dt class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-brand-600">Surveillance audits</dt>
+                  <dd class="mt-1.5 flex flex-wrap gap-2">
+                    {entry.data.surveillance.map((s) => (
+                      <span class="rounded-full bg-brand-50 px-3 py-1 text-[0.8rem] text-brand-800 ring-1 ring-brand-900/8">{s}</span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+            </dl>
+
+            {entry.data.scope && (
+              <details class="group mt-7 rounded-xl border border-ink-900/8 bg-sand/70 p-5">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-semibold text-brand-950">
+                  Certified scope of activities
+                  <span class="text-brand-600 transition group-open:rotate-90"><Icon name="arrow" class="size-4" /></span>
+                </summary>
+                <p class="mt-4 text-[0.88rem] leading-relaxed text-ink-600">{entry.data.scope}</p>
+              </details>
+            )}
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              {entry.data.file && (
+                <a href={entry.data.file} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full bg-brand-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-900">
+                  <Icon name="doc" class="size-4" /> Download PDF
+                </a>
+              )}
+              {entry.data.verifyUrl && (
+                <a href={entry.data.verifyUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-full border border-brand-800/20 px-5 py-2.5 text-sm font-semibold text-brand-800 transition hover:bg-brand-50">
+                  <Icon name="check" class="size-4" /> Verify independently
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <section class="texture-weave bg-brand-950 py-16 text-white lg:py-20">
+    <div class="container-page">
+      <SectionHeading
+        tone="dark"
+        eyebrow="Why it matters"
+        title="What certification actually buys a buyer"
+        align="center"
+      />
+      <div class="mx-auto mt-12 grid max-w-5xl gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-3">
+        {[
+          { icon: 'shield', t: 'Auditable food safety', d: 'Hazards identified and controlled at defined critical points, with monitoring records that survive a buyer audit.' },
+          { icon: 'snow', t: 'Cold-chain evidence', d: 'Temperature discipline is documented across receiving, storage and dispatch — not asserted verbally.' },
+          { icon: 'doc', t: 'Tender-ready paperwork', d: 'Institutional buyers, CSD stores and hotel groups can clear us through procurement without exceptions.' },
+        ].map((c) => (
+          <div class="bg-brand-950 p-7">
+            <Icon name={c.icon} class="size-6 text-gold-300" />
+            <h3 class="mt-5 text-lg text-white">{c.t}</h3>
+            <p class="mt-2 text-[0.88rem] leading-relaxed text-white/55">{c.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Need our certificates for your vendor file?"
+    lede="Every certificate on this page is downloadable as a PDF. If your procurement team needs anything further — trade licence, import documentation or a specific declaration — just ask."
+  />
+</BaseLayout>
+
+<style is:global>
+  .prose-wc p { margin-block: 1rem; line-height: 1.75; color: var(--color-ink-600); }
+  .prose-wc p:first-child { margin-top: 0; }
+  .prose-wc strong { color: var(--color-brand-900); font-weight: 600; }
+</style>

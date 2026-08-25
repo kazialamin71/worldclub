@@ -1,0 +1,18 @@
+{
+  "note": "Brands World Club represents in Bangladesh, plus own brands. 'logo' is an optional file in /public/images/brands/ — leave it empty and a typographic tile is rendered instead.",
+  "represented": [
+    { "name": "Woos", "origin": "Hong Kong", "flag": "🇭🇰", "category": "Food products", "logo": "" },
+    { "name": "Be Fresh Produce", "origin": "The Netherlands", "flag": "🇳🇱", "category": "Fresh produce", "logo": "" },
+    { "name": "Macaya Seafoods", "origin": "Chile", "flag": "🇨🇱", "category": "Seafood", "logo": "" },
+    { "name": "AquaChile", "origin": "Chile", "flag": "🇨🇱", "category": "Salmon", "logo": "" },
+    { "name": "Philadelphia", "origin": "Australia", "flag": "🇦🇺", "category": "Cheese", "logo": "" },
+    { "name": "ABW Foods", "origin": "Australia", "flag": "🇦🇺", "category": "Food products", "logo": "" },
+    { "name": "Bauer", "origin": "Germany", "flag": "🇩🇪", "category": "Yogurt", "logo": "" },
+    { "name": "Raayan", "origin": "Kenya", "flag": "🇰🇪", "category": "Avocado & mango", "logo": "" }
+  ],
+  "own": [
+    { "name": "ARISA", "category": "House brand", "detail": "The group's premium own-label mark.", "logo": "" },
+    { "name": "Fatima", "category": "Refined sunflower oil", "detail": "Product of Spain.", "logo": "" },
+    { "name": "Madina", "category": "Duck", "detail": "Own-brand frozen duck.", "logo": "" }
+  ]
+}

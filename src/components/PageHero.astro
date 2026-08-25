@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  eyebrow: string;
+  title: string;
+  lede?: string;
+  crumbs?: { label: string; href: string }[];
+}
+const { eyebrow, title, lede, crumbs = [] } = Astro.props;
+---
+<section class="texture-weave relative overflow-hidden bg-brand-950 text-white">
+  <div
+    class="pointer-events-none absolute -right-24 -top-32 size-[26rem] rounded-full bg-brand-700/40 blur-3xl"
+    aria-hidden="true"
+  />
+  <div
+    class="pointer-events-none absolute -bottom-40 left-1/4 size-[22rem] rounded-full bg-gold-600/15 blur-3xl"
+    aria-hidden="true"
+  />
+  <div class="container-page relative py-14 md:py-20">
+    {crumbs.length > 0 && (
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex flex-wrap items-center gap-1.5 text-[0.78rem] text-white/50">
+          <li><a href="/" class="transition hover:text-gold-200">Home</a></li>
+          {crumbs.map((c) => (
+            <li class="flex items-center gap-1.5">
+              <Icon name="arrow" class="size-3 opacity-40" />
+              <a href={c.href} class="transition hover:text-gold-200">{c.label}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <p class="flex items-center gap-2.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-gold-300">
+      <span class="h-px w-7 bg-gold-300/50" />{eyebrow}
+    </p>
+    <h1 class="mt-4 max-w-4xl text-[2.1rem] leading-[1.1] sm:text-5xl lg:text-[3.4rem]">{title}</h1>
+    {lede && <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">{lede}</p>}
+  </div>
+</section>

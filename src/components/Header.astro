@@ -1,0 +1,123 @@
+---
+import { NAV, CONTACT } from '~/consts';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<a
+  href="#main"
+  class="sr-only rounded-md bg-brand-900 px-4 py-2 text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
+>Skip to content</a>
+
+<!-- Utility bar: the two things a trade buyer wants within one glance. -->
+<div class="hidden border-b border-brand-900/10 bg-brand-950 text-white/70 lg:block">
+  <div class="container-page flex h-9 items-center justify-between text-[0.78rem]">
+    <p class="flex items-center gap-2">
+      <Icon name="shield" class="size-3.5 text-gold-300" />
+      ISO 9001 · ISO 22000 · HACCP certified · DCCI-08461
+    </p>
+    <p class="flex items-center gap-5">
+      <a href={`tel:+${CONTACT.phonePrimaryRaw}`} class="flex items-center gap-1.5 transition hover:text-white">
+        <Icon name="phone" class="size-3.5" />{CONTACT.phonePrimary}
+      </a>
+      <a href={`mailto:${CONTACT.email}`} class="flex items-center gap-1.5 transition hover:text-white">
+        <Icon name="mail" class="size-3.5" />{CONTACT.email}
+      </a>
+    </p>
+  </div>
+</div>
+
+<header
+  id="site-header"
+  class="sticky top-0 z-40 border-b border-ink-900/8 bg-sand/85 backdrop-blur-md transition-shadow"
+>
+  <nav class="container-page flex h-16 items-center justify-between gap-6 md:h-[4.5rem]" aria-label="Primary">
+    <a href="/" class="shrink-0" aria-label="World Club — home">
+      <Logo withTagline />
+    </a>
+
+    <ul class="hidden items-center gap-1 lg:flex">
+      {NAV.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'relative rounded-md px-3 py-2 text-[0.925rem] font-medium transition-colors',
+              isActive(item.href)
+                ? 'text-brand-800 after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:rounded-full after:bg-gold-400'
+                : 'text-ink-600 hover:text-brand-800',
+            ]}
+          >{item.label}</a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="/contact#enquiry"
+        class="hidden rounded-full bg-brand-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-900 sm:inline-flex"
+      >Request a quote</a>
+
+      <button
+        type="button"
+        id="nav-toggle"
+        class="inline-flex size-10 items-center justify-center rounded-md text-brand-900 lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label="Open menu"
+      >
+        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path id="nav-icon-open" d="M4 7h16M4 12h16M4 17h16" />
+          <path id="nav-icon-close" class="hidden" d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-nav" class="hidden border-t border-ink-900/8 bg-sand lg:hidden">
+    <ul class="container-page flex flex-col py-3">
+      {NAV.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'block border-b border-ink-900/5 py-3.5 text-base font-medium',
+              isActive(item.href) ? 'text-brand-800' : 'text-ink-700',
+            ]}
+          >{item.label}</a>
+        </li>
+      ))}
+      <li class="pt-4">
+        <a href="/contact#enquiry" class="block rounded-full bg-brand-800 px-5 py-3 text-center text-sm font-semibold text-white">
+          Request a quote
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('mobile-nav');
+  const open = document.getElementById('nav-icon-open');
+  const close = document.getElementById('nav-icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+    menu?.classList.toggle('hidden', isOpen);
+    open?.classList.toggle('hidden', !isOpen);
+    close?.classList.toggle('hidden', isOpen);
+  });
+
+  // Lift the header off the page once the user scrolls.
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.classList.toggle('shadow-[0_10px_30px_-24px_rgba(11,62,46,0.7)]', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

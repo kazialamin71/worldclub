@@ -1,0 +1,125 @@
+---
+import { SITE, CONTACT } from '~/consts';
+import company from '~/data/company.json';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Set true only on the homepage so its <title> is not suffixed. */
+  isHome?: boolean;
+  image?: string;
+  noindex?: boolean;
+  /** Extra JSON-LD blocks (breadcrumbs, item lists, FAQ …). */
+  schema?: Record<string, unknown>[];
+}
+
+const { title, description, isHome = false, image = '/og-image.svg', noindex = false, schema = [] } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site ?? SITE.url).href;
+const socialImage = new URL(image, Astro.site ?? SITE.url).href;
+const fullTitle = isHome ? `${SITE.name} — ${SITE.tagline}` : `${title} | ${SITE.name}`;
+
+/* Organisation schema — the single most valuable structured data for a
+   B2B trading company: it feeds Google's knowledge panel and brand SERP. */
+const organisation = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE.url}/#organization`,
+  name: SITE.name,
+  legalName: SITE.legalName,
+  url: SITE.url,
+  description: SITE.description,
+  email: CONTACT.email,
+  telephone: CONTACT.phonePrimary,
+  foundingDate: SITE.founded,
+  slogan: SITE.tagline,
+  naics: '424490',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Manha Villa, House No. 17, Road No. 05, Nikunja-2, Khilkhet',
+    addressLocality: 'Dhaka',
+    postalCode: '1229',
+    addressCountry: 'BD',
+  },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      telephone: CONTACT.phonePrimary,
+      contactType: 'sales',
+      areaServed: ['BD', 'JP', 'CA', 'FR', 'NL', 'MY', 'SA'],
+      availableLanguage: ['English', 'Bengali'],
+    },
+  ],
+  areaServed: 'Bangladesh',
+  knowsAbout: [
+    'Food import', 'Food export', 'FMCG distribution', 'Cold chain logistics',
+    'Fresh produce', 'Frozen seafood', 'Dairy distribution',
+  ],
+  hasCredential: [
+    { '@type': 'EducationalOccupationalCredential', credentialCategory: 'certification', name: 'ISO 9001:2015 Quality Management System' },
+    { '@type': 'EducationalOccupationalCredential', credentialCategory: 'certification', name: 'ISO 22000:2018 Food Safety Management System' },
+    { '@type': 'EducationalOccupationalCredential', credentialCategory: 'certification', name: 'HACCP' },
+  ],
+  memberOf: { '@type': 'Organization', name: 'Dhaka Chamber of Commerce & Industry' },
+  location: company.offices.map((o) => ({
+    '@type': 'Place',
+    name: `${SITE.name} — ${o.city}`,
+    address: { '@type': 'PostalAddress', addressLocality: o.city, addressCountry: o.country, streetAddress: o.address },
+  })),
+};
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  url: SITE.url,
+  name: SITE.name,
+  publisher: { '@id': `${SITE.url}/#organization` },
+  inLanguage: 'en',
+};
+
+const blocks = [organisation, website, ...schema];
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta
+  name="robots"
+  content={noindex
+    ? 'noindex, nofollow'
+    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+/>
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={socialImage} />
+<meta property="og:locale" content={SITE.locale} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImage} />
+
+<meta name="theme-color" content="#0b3e2e" />
+<meta name="geo.region" content="BD-13" />
+<meta name="geo.placename" content="Dhaka" />
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+/>
+
+{blocks.map((b) => <script type="application/ld+json" is:inline set:html={JSON.stringify(b)} />)}

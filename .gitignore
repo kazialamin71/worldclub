@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.production
+.DS_Store
+npm-debug.log*
+
+# Original source PDFs (duplicates of public/certificates/)
+/*.pdf

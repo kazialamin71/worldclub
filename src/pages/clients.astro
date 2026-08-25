@@ -1,0 +1,116 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+import SectionHeading from '~/components/SectionHeading.astro';
+import LogoTile from '~/components/LogoTile.astro';
+import CtaBand from '~/components/CtaBand.astro';
+import Icon from '~/components/Icon.astro';
+import clients from '~/data/clients.json';
+import { SITE } from '~/consts';
+
+const grouped = clients.segments
+  .map((s) => ({ ...s, items: clients.clients.filter((c) => c.segment === s.id) }))
+  .filter((s) => s.items.length > 0);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Clients', item: `${SITE.url}/clients` },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Clients & Distributors"
+  description="World Club supplies Unimart, Shwapno, Agora, Meena Bazar, Lavender, Chaldal, CSD Store and other leading Bangladeshi supershops, plus 500+ wholesalers across Badamtoli Ghat, Paltan, Motijheel, Kawran Bazar and Gazipur."
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Clients & distributors"
+    title="Who we supply"
+    lede="Bangladesh's leading supershop chains, online grocers, institutional buyers and the wholesale markets — plus 5-star hotels, restaurants and corporate houses nationwide."
+    crumbs={[{ label: 'Clients', href: '/clients' }]}
+  />
+
+  <!-- Segment overview -->
+  <section class="border-b border-ink-900/8 bg-white/60">
+    <div class="container-page flex flex-wrap gap-x-8 gap-y-3 py-6 text-sm text-ink-600">
+      {clients.institutionalSegments.map((s) => (
+        <span class="flex items-center gap-2">
+          <Icon name="check" class="size-3.5 text-brand-500" strokeWidth={2.5} />{s}
+        </span>
+      ))}
+    </div>
+  </section>
+
+  <section class="container-page space-y-16 py-16 lg:py-20">
+    {grouped.map((group) => (
+      <div>
+        <div class="flex items-baseline justify-between gap-4 border-b border-ink-900/8 pb-4">
+          <h2 class="font-display text-2xl text-brand-950">{group.label}</h2>
+          <span class="text-sm text-ink-500">{group.items.length}</span>
+        </div>
+        <div class="mt-7 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          {group.items.map((c) => (
+            <LogoTile name={c.name} note={c.note} logo={c.logo || undefined} />
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- Wholesale -->
+  <section class="container-page pb-16 lg:pb-20">
+    <div class="texture-weave overflow-hidden rounded-3xl bg-brand-900 px-7 py-12 text-white sm:px-12 lg:px-16">
+      <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div>
+          <p class="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-gold-300">Wholesale network</p>
+          <p class="mt-5 font-display text-5xl font-semibold leading-none text-white lg:text-6xl">
+            {clients.wholesale.headline}
+          </p>
+          <p class="mt-5 max-w-md leading-relaxed text-white/65">
+            Beyond named retail accounts, our volume moves through the wholesale markets — the
+            channel that puts imported product into thousands of smaller stores across the country.
+          </p>
+        </div>
+        <ul class="grid gap-3 sm:grid-cols-2">
+          {clients.wholesale.markets.map((m) => (
+            <li class="flex items-center gap-3 rounded-xl border border-white/12 bg-white/[0.04] px-5 py-4 text-sm font-medium">
+              <Icon name="pin" class="size-4 shrink-0 text-gold-300" />{m}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Become a client -->
+  <section class="container-page pb-8">
+    <SectionHeading
+      eyebrow="Working with us"
+      title="How a new account starts"
+      lede="Three steps, usually inside a week."
+    />
+    <ol class="mt-12 grid gap-5 lg:grid-cols-3">
+      {[
+        { n: '01', t: 'Tell us what you need', d: 'Categories, approximate volumes, delivery location and order frequency. A rough idea is enough to start.' },
+        { n: '02', t: 'We quote and confirm', d: 'Availability, origin options and landed pricing — with the certificates and documentation your procurement team needs.' },
+        { n: '03', t: 'Scheduled delivery begins', d: 'A fixed delivery rhythm out of our own warehouse and cold storage, so your shelf never runs empty.' },
+      ].map((s) => (
+        <li class="rounded-2xl border border-ink-900/8 bg-white p-7 shadow-card lg:p-8">
+          <span class="font-display text-sm font-semibold text-gold-600">{s.n}</span>
+          <h3 class="mt-3 text-xl text-brand-950">{s.t}</h3>
+          <p class="mt-3 leading-relaxed text-ink-600">{s.d}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <CtaBand
+    title="Want World Club on your supplier list?"
+    lede="Whether you run a single store, a national chain or a hotel kitchen, tell us what you need and we will quote it."
+  />
+</BaseLayout>

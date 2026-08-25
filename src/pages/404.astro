@@ -1,0 +1,22 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Icon from '~/components/Icon.astro';
+import { NAV } from '~/consts';
+---
+<BaseLayout title="Page not found" description="The page you were looking for does not exist. Browse the World Club product range, certifications and client list, or get in touch with our team in Dhaka." noindex>
+  <section class="container-page flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
+    <p class="font-display text-7xl font-semibold text-brand-100">404</p>
+    <h1 class="mt-6 text-3xl text-brand-950 sm:text-4xl">We couldn’t find that page</h1>
+    <p class="mt-4 max-w-md leading-relaxed text-ink-600">
+      The link may be out of date. Try one of these instead — or send us an enquiry and we will point you the right way.
+    </p>
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <a href="/" class="inline-flex items-center gap-2 rounded-full bg-brand-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-900">
+        Back to home <Icon name="arrow" class="size-4" />
+      </a>
+      {NAV.map((n) => (
+        <a href={n.href} class="inline-flex items-center rounded-full border border-brand-800/20 px-5 py-3 text-sm font-semibold text-brand-800 transition hover:bg-brand-50">{n.label}</a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

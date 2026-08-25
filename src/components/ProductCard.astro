@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { entry: CollectionEntry<'products'>; }
+const { entry } = Astro.props;
+const { title, tagline, summary, icon, items, image, storage } = entry.data;
+---
+<a
+  href={`/products/${entry.id}`}
+  class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink-900/8 bg-white shadow-card transition duration-300 hover:-translate-y-1 hover:border-brand-600/25 hover:shadow-lift"
+>
+  <div class="relative aspect-[16/9] overflow-hidden bg-brand-900">
+    {image ? (
+      <img src={image} alt="" width="640" height="360" loading="lazy" decoding="async" class="size-full object-cover transition duration-500 group-hover:scale-105" />
+    ) : (
+      <div class="texture-weave relative size-full bg-gradient-to-br from-brand-800 via-brand-900 to-brand-950">
+        <Icon name={icon} class="absolute -bottom-6 -right-4 size-40 text-white/[0.07]" strokeWidth={1} />
+        <Icon name={icon} class="absolute left-6 top-6 size-9 text-gold-300" />
+      </div>
+    )}
+    {storage && (
+      <span class="absolute bottom-3 right-3 rounded-full bg-black/45 px-2.5 py-1 text-[0.68rem] font-medium text-white backdrop-blur-sm">
+        {storage}
+      </span>
+    )}
+  </div>
+
+  <div class="flex flex-1 flex-col p-6">
+    <p class="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-brand-600">{tagline}</p>
+    <h3 class="mt-2 text-xl text-brand-950">{title}</h3>
+    <p class="mt-3 flex-1 text-[0.9rem] leading-relaxed text-ink-600">{summary}</p>
+    <p class="mt-5 flex items-center justify-between border-t border-ink-900/8 pt-4 text-sm font-medium text-brand-700">
+      <span>{items.length} lines</span>
+      <span class="inline-flex items-center gap-1.5 transition group-hover:gap-2.5">
+        View range <Icon name="arrow" class="size-4" />
+      </span>
+    </p>
+  </div>
+</a>

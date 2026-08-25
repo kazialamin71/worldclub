@@ -196,16 +196,80 @@ Add it in `studio/schemaTypes/product.ts`, then map it in `src/loaders/sanityPro
 
 ## Deployment
 
-**Cloudflare Pages / Netlify / Vercel** — connect the repository, then:
-- Build command: `npm run build`
-- Output directory: `dist`
+The live site is `https://arisa-worldclub.com`, hosted on **Cloudflare Pages**, built from the
+`main` branch of this repository. Every push to `main` triggers a rebuild automatically.
 
-**Shared hosting (cPanel)** — run `npm run build` locally and upload the **contents** of
-`dist/` into `public_html/`. Add this to `.htaccess` for a clean 404 page:
+### First-time setup
+
+**1 — Push the code.** Cloudflare builds from GitHub, so `main` must be up to date:
+
+```bash
+git push origin main
+```
+
+**2 — Create the Pages project.**
+Cloudflare dashboard → **Compute (Workers & Pages)** in the sidebar → **Create application**
+→ **Pages** tab → **Connect to Git** → authorise GitHub if prompted → pick `worldclub` →
+**Begin setup**.
+
+**3 — Build settings.** Choosing the **Astro** framework preset fills these in; confirm they read:
+
+| Setting | Value |
+|---|---|
+| Framework preset | Astro |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Root directory | *(leave blank)* |
+
+Do **not** point the root directory at `studio/` — that is the separate CMS app and is not
+deployed here (it is hosted by Sanity, see the Sanity section above).
+
+**4 — Environment variable.** Before the first deploy, open **Environment variables** and add:
+
+| Name | Value |
+|---|---|
+| `SANITY_PROJECT_ID` | `5r5zmje7` |
+
+Add it to **both** Production and Preview. Without it the build falls back to the markdown
+files in `src/content/products/` — the site still works, but nothing edited in the Studio
+appears, which is a confusing failure to diagnose later.
+
+**5 — Deploy.** Select **Save and Deploy**. The first build takes 2–4 minutes and publishes to
+a `*.pages.dev` URL. Check that URL before attaching the real domain.
+
+**6 — Attach the domain.** Pages project → **Custom domains** → **Set up a domain** →
+`arisa-worldclub.com`. Because the domain is registered in the same Cloudflare account, the
+DNS record and SSL certificate are created automatically — usually live within a few minutes.
+Then add `www.arisa-worldclub.com` as a second custom domain so it redirects to the bare one.
+
+**7 — Rebuild automatically when content is published.** The site is static, so a Publish in
+the Studio changes nothing until a rebuild runs:
+
+- Pages project → **Settings → Deploy hooks** → create one (branch `main`) → copy the URL.
+- [sanity.io/manage](https://sanity.io/manage) → project → **API → Webhooks** → **Create webhook**.
+  Paste the URL, method **POST**, trigger on **Create / Update / Delete**, filter `_type == "product"`.
+
+Content then goes live roughly a minute after Publish, with no terminal involved.
+
+### Day-to-day
+
+- **Code change** → `git push origin main` → Cloudflare rebuilds automatically.
+- **Content change** → Publish in the Studio → webhook rebuilds automatically.
+- **Build logs** → Pages project → Deployments → select a deployment.
+
+A failed build leaves the previous deployment live, so a broken push cannot take the site down.
+
+### Alternative: shared hosting (cPanel)
+
+Run `npm run build` locally and upload the **contents** of `dist/` into `public_html/`.
+Add this to `.htaccess` for a clean 404 page:
 
 ```apache
 ErrorDocument 404 /404.html
 ```
+
+Note that this route has no automatic rebuild, so every content change means building and
+re-uploading by hand.
 
 ---
 

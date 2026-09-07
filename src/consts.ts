@@ -27,9 +27,11 @@ export const CONTACT = {
 } as const;
 
 /* Web3Forms — free, no backend needed for a static site.
-   1. Go to https://web3forms.com, enter the company inbox, get an access key.
-   2. Paste the key below. That is the entire setup. */
-export const FORM_ACCESS_KEY = 'REPLACE_WITH_YOUR_WEB3FORMS_ACCESS_KEY';
+   Enquiries are delivered to the inbox registered at https://web3forms.com.
+   This is Web3Forms' public access key: it is designed to ship in the page HTML and
+   carries no account access, so it belongs in the repo rather than in .env.
+   To point the form at a different inbox, register that address and swap the key. */
+export const FORM_ACCESS_KEY = '03cf694e-653c-4d3f-a7e1-c2d468baa64b';
 
 export const NAV: { label: string; href: string }[] = [
   { label: 'About', href: '/about' },

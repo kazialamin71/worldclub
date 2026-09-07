@@ -4,7 +4,6 @@ import { getCollection } from 'astro:content';
 import Icon from './Icon.astro';
 
 const categories = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
-const configured = FORM_ACCESS_KEY !== 'REPLACE_WITH_YOUR_WEB3FORMS_ACCESS_KEY';
 
 const field =
   'w-full rounded-lg border border-ink-900/12 bg-white px-4 py-3 text-[0.95rem] text-ink-900 shadow-sm transition placeholder:text-ink-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/20';
@@ -73,14 +72,6 @@ const label = 'block text-sm font-medium text-brand-950';
 
   <p id="form-status" class="hidden rounded-lg px-4 py-3 text-sm" role="status" aria-live="polite"></p>
 
-  {!configured && (
-    <p class="rounded-lg border border-gold-300 bg-gold-50 px-4 py-3 text-[0.82rem] leading-relaxed text-gold-800">
-      <strong>Setup note (only you can see this — it disappears automatically):</strong> get a free
-      access key at <a class="underline" href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a>
-      and paste it into <code class="rounded bg-white px-1">FORM_ACCESS_KEY</code> in
-      <code class="rounded bg-white px-1">src/consts.ts</code>. Until then this form will not deliver mail.
-    </p>
-  )}
 </form>
 
 <script>

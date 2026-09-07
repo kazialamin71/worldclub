@@ -11,6 +11,15 @@ const products = (await getCollection('products')).sort((a, b) => a.data.order -
 const totalLines = products.reduce((n, p) => n + p.data.items.length, 0);
 const allOrigins = [...new Set(products.flatMap((p) => p.data.origins))].sort();
 
+/* Group the catalogue by trading division. The divisions are whatever the content says
+   they are — add a category with a new division name in the Studio and a new section
+   appears here, in the position its sort order puts it. */
+const divisions = [...new Set(products.map((p) => p.data.division))].map((name) => ({
+  name,
+  entries: products.filter((p) => p.data.division === name),
+}));
+const grouped = divisions.length > 1;
+
 const schema = [
   {
     '@context': 'https://schema.org',
@@ -24,13 +33,13 @@ const schema = [
 ---
 <BaseLayout
   title="Product Range"
-  description={`${totalLines}+ imported and exported food lines across ${products.length} categories — fresh fruits and vegetables, frozen fish and meat, dairy and cheese, edible oils, spices, herbs and dry goods, distributed across Bangladesh.`}
+  description={`${totalLines}+ imported and exported lines across ${products.length} categories — fresh fruits and vegetables, frozen fish and meat, dairy, bakery, drinks and beverages, edible oils, spices and dry goods, plus electronics and appliances, distributed across Bangladesh.`}
   schema={schema}
 >
   <PageHero
     eyebrow="Product range"
     title={`${totalLines}+ lines across ${products.length} categories`}
-    lede="Everything World Club imports into Bangladesh and exports out of it. Every category is handled under the storage regime it actually needs — ambient, chilled or deep-frozen."
+    lede="Everything World Club imports into Bangladesh and exports out of it, across both trading divisions. Every food category is handled under the storage regime it actually needs — ambient, chilled or deep-frozen."
     crumbs={[{ label: 'Products', href: '/products' }]}
   />
 
@@ -44,10 +53,23 @@ const schema = [
     </div>
   </section>
 
-  <section class="container-page py-16 lg:py-20">
-    <div class="reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {products.map((entry) => <ProductCard entry={entry} />)}
-    </div>
+  <section class="container-page space-y-14 py-16 lg:py-20">
+    {divisions.map((division) => (
+      <div>
+        {grouped && (
+          <div class="mb-8 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-ink-900/8 pb-4">
+            <h2 class="text-2xl text-brand-950">{division.name}</h2>
+            <p class="text-sm text-ink-500">
+              {division.entries.length} {division.entries.length === 1 ? 'category' : 'categories'} ·{' '}
+              {division.entries.reduce((n, p) => n + p.data.items.length, 0)} lines
+            </p>
+          </div>
+        )}
+        <div class="reveal grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {division.entries.map((entry) => <ProductCard entry={entry} />)}
+        </div>
+      </div>
+    ))}
   </section>
 
   <section class="container-page pb-4">

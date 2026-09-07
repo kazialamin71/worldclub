@@ -1,22 +1,49 @@
 ---
 import { NAV, CONTACT } from '~/consts';
+import company from '~/data/company.json';
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+
+/* Export-market approvals worth surfacing on every page. Edit src/data/company.json —
+   anything flagged `highlight` appears here and on the certifications page. */
+const approvals = company.approvals.filter((a) => a.highlight);
 ---
 <a
   href="#main"
   class="sr-only rounded-md bg-brand-900 px-4 py-2 text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
 >Skip to content</a>
 
+<!-- Approvals strip: on small screens the utility bar below is hidden, so the export
+     approvals get their own line rather than disappearing on the device most buyers use. -->
+<div class="border-b border-white/10 bg-brand-950 px-4 py-2 lg:hidden">
+  <p class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 text-[0.7rem] text-white/60">
+    {approvals.map((a) => (
+      <span class="inline-flex items-center gap-1 rounded-full bg-gold-400/15 px-2.5 py-0.5 font-semibold text-gold-200 ring-1 ring-gold-300/40">
+        <Icon name="check" class="size-3" strokeWidth={2.6} />{a.name}
+      </span>
+    ))}
+    <span class="px-1">ISO 9001 · ISO 22000 · HACCP</span>
+  </p>
+</div>
+
 <!-- Utility bar: the two things a trade buyer wants within one glance. -->
 <div class="hidden border-b border-brand-900/10 bg-brand-950 text-white/70 lg:block">
-  <div class="container-page flex h-9 items-center justify-between text-[0.78rem]">
+  <div class="container-page flex h-10 items-center justify-between text-[0.78rem]">
     <p class="flex items-center gap-2">
       <Icon name="shield" class="size-3.5 text-gold-300" />
       ISO 9001 · ISO 22000 · HACCP certified · DCCI-08461
+      {approvals.map((a) => (
+        <a
+          href="/certifications#approvals"
+          title={a.detail}
+          class="ml-1 inline-flex items-center gap-1 rounded-full bg-gold-400/15 px-2.5 py-0.5 text-[0.72rem] font-semibold text-gold-200 ring-1 ring-gold-300/40 transition hover:bg-gold-400/25 hover:text-gold-100"
+        >
+          <Icon name="check" class="size-3" strokeWidth={2.6} />{a.name}
+        </a>
+      ))}
     </p>
     <p class="flex items-center gap-5">
       <a href={`tel:+${CONTACT.phonePrimaryRaw}`} class="flex items-center gap-1.5 transition hover:text-white">

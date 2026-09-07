@@ -3,8 +3,14 @@ import { defineField, defineType } from 'sanity';
 /** Icon keys the website can render — see src/components/Icon.astro. */
 const ICONS = [
   'fruit', 'leaf', 'fish', 'meat', 'milk', 'icecream',
-  'droplet', 'spice', 'nut', 'ship', 'globe', 'snow', 'truck', 'warehouse',
+  'droplet', 'spice', 'nut', 'bottle', 'bread', 'chip',
+  'ship', 'globe', 'snow', 'truck', 'warehouse',
 ];
+
+/** Trading divisions. These are the ones the site groups by today — but the field is a
+    free-text string, so typing a new division name here creates a new section on
+    /products by itself, with no code change. */
+const DIVISIONS = ['Food & Beverage', 'Electronics & Appliances'];
 
 export const product = defineType({
   name: 'product',
@@ -65,6 +71,17 @@ export const product = defineType({
       group: 'content',
       of: [{ type: 'block' }],
       description: 'Two or three paragraphs shown on the category page.',
+    }),
+    defineField({
+      name: 'division',
+      title: 'Trading division',
+      type: 'string',
+      group: 'trade',
+      description: `Groups this category into a section on the products page. In use today: ${DIVISIONS.join(
+        ', ',
+      )}. Type an exactly matching name to join a section, or a new name to start one.`,
+      initialValue: 'Food & Beverage',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'items',

@@ -19,6 +19,10 @@ const products = defineCollection({
     summary: z.string(),
     /** Icon key — see src/components/Icon.astro for the available set. */
     icon: z.string().default('leaf'),
+    /** Trading division this category belongs to. Categories are grouped under this
+        label on /products, so adding a category with a new division name creates a new
+        section on its own — no code change needed. */
+    division: z.string().default('Food & Beverage'),
     /** Optional hero photo, e.g. "/images/products/fruits.jpg". Falls back to
         a generated pattern when empty, so the page never looks broken. */
     image: z.string().optional(),

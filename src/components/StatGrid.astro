@@ -4,6 +4,14 @@ interface Props { tone?: 'light' | 'dark'; limit?: number; }
 const { tone = 'dark', limit } = Astro.props;
 const stats = limit ? company.stats.slice(0, limit) : company.stats;
 const dark = tone === 'dark';
+
+/* The grid is gap-px over a tinted background, so a half-empty last row shows that tint
+   as a stray block. Pad it with blank cells — the count differs per breakpoint because
+   the column count does. */
+const missing = (columns: number) => (columns - (stats.length % columns)) % columns;
+const atSm = missing(2);
+const atLg = missing(3);
+const fillers = Math.max(atSm, atLg);
 ---
 <dl class:list={[
   'grid gap-px overflow-hidden rounded-2xl',
@@ -20,5 +28,16 @@ const dark = tone === 'dark';
         <span class:list={['mt-1.5 block text-[0.85rem] leading-relaxed', dark ? 'text-white/55' : 'text-ink-500']}>{s.detail}</span>
       </dd>
     </div>
+  ))}
+  {Array.from({ length: fillers }).map((_, i) => (
+    <div
+      aria-hidden="true"
+      class:list={[
+        'hidden',
+        i < atSm ? 'sm:block' : 'sm:hidden',
+        i < atLg ? 'lg:block' : 'lg:hidden',
+        dark ? 'bg-brand-950' : 'bg-white',
+      ]}
+    />
   ))}
 </dl>

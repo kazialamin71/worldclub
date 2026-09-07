@@ -1,6 +1,6 @@
 ---
 title: Bangladeshi Export Range
-order: 10
+order: 12
 featured: true
 icon: ship
 tagline: Bangladeshi products, shipped to six export markets

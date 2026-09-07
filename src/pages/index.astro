@@ -15,6 +15,8 @@ import brands from '~/data/brands.json';
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
 const featured = products.filter((p) => p.data.featured).slice(0, 6);
 const certs = (await getCollection('certifications')).sort((a, b) => a.data.order - b.data.order);
+const approvals = company.approvals.filter((a) => a.highlight);
+const totalLines = products.reduce((n, p) => n + p.data.items.length, 0);
 
 const pillars = [
   {
@@ -98,7 +100,12 @@ const schema = [
           </a>
         </div>
 
-        <ul class="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/10 pt-7 text-[0.8rem] text-white/55">
+        <ul class="mt-12 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-white/10 pt-7 text-[0.8rem] text-white/55">
+          {approvals.map((a) => (
+            <li class="inline-flex items-center gap-1.5 rounded-full bg-gold-400/15 px-3 py-1 font-semibold text-gold-200 ring-1 ring-gold-300/40">
+              <Icon name="check" class="size-3.5" strokeWidth={2.6} />{a.name}
+            </li>
+          ))}
           {['ISO 9001:2015', 'ISO 22000:2018', 'HACCP certified', 'DCCI member since 2021'].map((c) => (
             <li class="flex items-center gap-2">
               <Icon name="check" class="size-3.5 text-gold-300" strokeWidth={2.5} />{c}
@@ -160,8 +167,8 @@ const schema = [
       <div class="flex flex-wrap items-end justify-between gap-6">
         <SectionHeading
           eyebrow="Product range"
-          title="200+ lines across ten categories"
-          lede="From Washington apples and Chilean salmon to Philadelphia cheese and our own Fatima sunflower oil — sourced directly, stored properly, delivered retail-ready."
+          title={`${totalLines}+ lines across ${products.length} categories`}
+          lede="From Washington apples and Chilean salmon to Philadelphia cheese, bakery, beverages and our own Fatima sunflower oil — plus a separate electronics and appliances division. Sourced directly, stored properly, delivered retail-ready."
         />
         <a href="/products" class="inline-flex items-center gap-2 rounded-full border border-brand-800/20 px-5 py-2.5 text-sm font-semibold text-brand-800 transition hover:bg-brand-800 hover:text-white">
           All categories <Icon name="arrow" class="size-4" />
@@ -181,7 +188,7 @@ const schema = [
         <SectionHeading
           eyebrow="Certifications"
           title="Audited systems, not claims"
-          lede="Our quality and food-safety systems are independently assessed by Quality Brains Management (Stockholm, Sweden) under accreditation SWE-24. Every certificate below is published in full — number, dates and scope."
+          lede="Our quality and food-safety systems are independently assessed by Quality Brains Management (Stockholm, Sweden) under accreditation SWE-24, and we hold FDA and REX approval for the US and EU export lanes. Every certificate below is published in full — number, dates and scope."
         />
         <a href="/certifications" class="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-900">
           View all certificates <Icon name="arrow" class="size-4" />
@@ -199,6 +206,18 @@ const schema = [
             {c.data.certificateNo && (
               <p class="mt-4 border-t border-ink-900/8 pt-3 font-mono text-[0.75rem] text-brand-700">{c.data.certificateNo}</p>
             )}
+          </li>
+        ))}
+        {approvals.map((a) => (
+          <li class="rounded-2xl border border-gold-400/40 bg-gold-50 p-6 shadow-card">
+            <span class="inline-flex size-10 items-center justify-center rounded-lg bg-gold-400/25 text-gold-700 ring-1 ring-gold-600/20">
+              <Icon name="check" class="size-5" strokeWidth={2.4} />
+            </span>
+            <h3 class="mt-4 text-lg text-brand-950">{a.name}</h3>
+            <p class="mt-1 text-[0.85rem] text-ink-500">Export approval · {a.market}</p>
+            <p class="mt-4 border-t border-gold-600/15 pt-3 text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-gold-700">
+              {a.short} registered
+            </p>
           </li>
         ))}
       </ul>

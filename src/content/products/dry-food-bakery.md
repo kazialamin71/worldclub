@@ -1,19 +1,15 @@
 ---
-title: Dry Food, Bakery & Snacks
+title: Dry Food & Snacks
 order: 9
 icon: nut
-tagline: The certified dry range, retail-ready
-summary: Dry fruits and nuts, biscuits and cookies, noodles, sweets, chanachur, pickle, semai and vermicelli — the full ambient range inside our certified manufacturing and trading scope.
+tagline: The certified ambient grocery range
+summary: Dry fruits and nuts, biscuits, noodles, sweets, chanachur, pickle, semai, vermicelli and cooking mixes — the ambient grocery range inside our certified manufacturing and trading scope.
 storage: Ambient, dry
 origins: [India, Vietnam, Thailand, Netherlands]
 items:
   - Dry Fruits
   - All Types of Nuts
   - Biscuits
-  - Toast Biscuits
-  - Cookies
-  - Dry Cake
-  - All Types of Bakery
   - All Types of Snacks
   - All Types of Noodles
   - All Types of Sweets
@@ -26,8 +22,6 @@ items:
   - Khechuri Mix
   - Chotpoti Mix Masala
   - Ghee
-  - Fruit Drinks
-  - Carbonated Beverage
 ---
 
 The ambient range is the backbone of the wholesale business — the 500-plus wholesalers we

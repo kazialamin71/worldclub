@@ -12,7 +12,25 @@
     { "value": "39+", "label": "Global suppliers", "detail": "Long-standing, audited supplier relationships worldwide." },
     { "value": "15", "label": "Sourcing countries", "detail": "Supplier destinations across Europe, Asia, Oceania, Africa and the Americas." },
     { "value": "200+", "label": "Distribution points", "detail": "Supershops, department stores, hotels and wholesale channels nationwide." },
-    { "value": "120", "label": "Specialists", "detail": "People across selection, sourcing, import, cold storage and distribution." }
+    { "value": "28", "label": "Employees", "detail": "Twenty-eight direct employees working efficiently across selection, sourcing, import, quality, cold storage and distribution." },
+    { "value": "120", "label": "Total team", "detail": "Direct employees together with the field, warehouse and distribution staff working across the network." }
+  ],
+
+  "approvals": [
+    {
+      "name": "FDA Approved",
+      "short": "FDA",
+      "market": "United States",
+      "detail": "Registered with the United States Food & Drug Administration for food consignments shipped to US buyers, with the facility registration and prior notice paperwork that customs clearance requires.",
+      "highlight": true
+    },
+    {
+      "name": "REX Approved",
+      "short": "REX",
+      "market": "European Union",
+      "detail": "Registered Exporter under the EU REX system, allowing World Club to self-certify origin on shipments into the European Union and its preferential tariff schemes.",
+      "highlight": true
+    }
   ],
 
   "leadership": [
@@ -56,14 +74,14 @@
     { "title": "100% organic & high-quality food", "body": "Import, export and distribution built exclusively around organic and high-quality food products." },
     { "title": "Classified customer segments", "body": "Focused reach into the specific retail, institutional and wholesale segments we serve best." },
     { "title": "High-quality storage", "body": "Dedicated warehousing and temperature-controlled cold storage protecting the cold chain end to end." },
-    { "title": "Efficient business experts", "body": "A team of highly efficient specialists across selection, sourcing, import and distribution." },
+    { "title": "Efficient business experts", "body": "Twenty-eight employees work efficiently across selection, sourcing, import, quality and distribution — a deliberately small, senior team rather than a large one." },
     { "title": "Trustworthy partners", "body": "Long-term work with trustworthy suppliers and business partners in every sourcing market." }
   ],
 
   "futurePlans": [
     { "title": "Food production & processing plant", "detail": "Moving upstream from distribution into own-manufacture of packaged and processed food." },
     { "title": "Hotel & restaurant chain", "detail": "Extending the food business into hospitality, backed by existing supply lines." },
-    { "title": "High-tech products from top brands", "detail": "New representation agreements in technology categories beyond food." },
+    { "title": "Growing the electronics division", "detail": "Adding further representation agreements for high-tech products from top brands, on top of the appliance and commercial refrigeration range already trading." },
     { "title": "Super shop & retail chain stores", "detail": "Owned retail, closing the loop from import through to the end customer." },
     { "title": "Automation engineering products", "detail": "Industrial and automation engineering lines for the Bangladeshi market." }
   ]

@@ -6,6 +6,21 @@ import Icon from './Icon.astro';
 import { getCollection } from 'astro:content';
 
 const products = (await getCollection('products')).sort((a, b) => a.data.order - b.data.order);
+
+/* The footer shows a shortlist, not the whole catalogue — but every trading division has to
+   be reachable from it, so take the first few and then top up with any division the cut
+   left out entirely. */
+const shortlist = products.slice(0, 8);
+const orphanedDivisions = products.filter(
+  (p) => !shortlist.some((s) => s.data.division === p.data.division),
+);
+const footerProducts = [
+  ...shortlist,
+  ...orphanedDivisions.filter(
+    (p, i) => orphanedDivisions.findIndex((o) => o.data.division === p.data.division) === i,
+  ),
+];
+
 const year = new Date().getFullYear();
 const hq = company.offices.find((o) => o.isHq)!;
 ---
@@ -36,7 +51,7 @@ const hq = company.offices.find((o) => o.isHq)!;
     <nav class="lg:col-span-3" aria-label="Product categories">
       <h2 class="font-display text-sm font-semibold uppercase tracking-[0.12em] text-white">Product range</h2>
       <ul class="mt-5 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1">
-        {products.slice(0, 8).map((p) => (
+        {footerProducts.map((p) => (
           <li><a href={`/products/${p.id}`} class="transition hover:text-gold-200">{p.data.title}</a></li>
         ))}
       </ul>

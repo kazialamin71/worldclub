@@ -4,7 +4,7 @@ import { sanityClient, imageUrl } from '~/lib/sanity';
 
 const QUERY = `*[_type == "product" && !(_id in path("drafts.**"))]{
   "slug": slug.current,
-  title, order, featured, icon, tagline, summary, storage,
+  title, order, featured, icon, division, tagline, summary, storage,
   origins, items, image, seoTitle, seoDescription, body
 }`;
 
@@ -22,6 +22,7 @@ interface SanityProduct {
   order?: number;
   featured?: boolean;
   icon?: string;
+  division?: string;
   tagline?: string;
   summary?: string;
   storage?: string;
@@ -80,6 +81,7 @@ export function sanityProductsLoader(): Loader {
             order: doc.order,
             featured: doc.featured,
             icon: doc.icon,
+            division: doc.division,
             tagline: doc.tagline,
             summary: doc.summary,
             storage: doc.storage,

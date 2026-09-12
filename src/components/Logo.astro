@@ -8,23 +8,21 @@ interface Props {
 const { class: klass = '', tone = 'dark', withTagline = false } = Astro.props;
 const text = tone === 'light' ? 'text-white' : 'text-brand-900';
 const sub = tone === 'light' ? 'text-white/60' : 'text-ink-500';
+
+/* The mark is a retouched scan, and parts of its white are enclosed by the swooshes —
+   indistinguishable from paper, so they stay opaque. On a light page that reads as the
+   background showing through; on a dark one it needs a white tile behind it, which is
+   also how the logo is printed. */
+const mark = '/images/logo-160.png';
 ---
 <span class={`inline-flex items-center gap-3 ${klass}`}>
-  <svg class="size-9 shrink-0" viewBox="0 0 40 40" aria-hidden="true">
-    <rect width="40" height="40" rx="9" fill="currentColor" class="text-brand-900" />
-    <path
-      d="M20 8.5c6.35 0 11.5 5.15 11.5 11.5S26.35 31.5 20 31.5 8.5 26.35 8.5 20 13.65 8.5 20 8.5Z"
-      class="stroke-gold-300"
-      stroke-width="1.2"
-      fill="none"
-      opacity="0.55"
-    />
-    <path d="M8.9 16.6h22.2M8.9 23.4h22.2" class="stroke-gold-300" stroke-width="1.2" opacity="0.4" />
-    <path
-      d="M11.6 14.6 15.4 26h2.1l2.5-7.6 2.5 7.6h2.1l3.8-11.4h-2.4l-2.5 8-2.5-8h-2l-2.5 8-2.5-8h-2.4Z"
-      class="fill-gold-300"
-    />
-  </svg>
+  {tone === 'light' ? (
+    <span class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-sm">
+      <img src={mark} alt="" width="188" height="160" class="h-full w-auto" loading="eager" decoding="async" />
+    </span>
+  ) : (
+    <img src={mark} alt="" width="188" height="160" class="h-10 w-auto shrink-0" loading="eager" decoding="async" />
+  )}
   <span class="flex flex-col leading-none">
     <span class={`font-display text-[1.3rem] font-semibold tracking-tight ${text}`}>World Club</span>
     {withTagline && (
